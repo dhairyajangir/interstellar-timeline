@@ -1,5 +1,7 @@
 ---
 import { ClientRouter } from 'astro:transitions';
+import Analytics from '@vercel/analytics/astro';
+import SpeedInsights from '@vercel/speed-insights/astro';
 import { site } from '../data/site';
 import Loader from '../components/Loader.astro';
 import Header from '../components/Header.astro';
@@ -79,6 +81,8 @@ const jsonLd = {
       <slot />
     </main>
     <Footer />
+    <Analytics />
+    <SpeedInsights />
     <script>
       import { start } from '../engine/astro';
       import { setupMotion } from '../motion/setup';
