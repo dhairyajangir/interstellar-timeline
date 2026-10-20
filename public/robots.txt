@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://interstellar-timeline.vercel.app/sitemap-index.xml

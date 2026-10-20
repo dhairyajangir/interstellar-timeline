@@ -1,0 +1,95 @@
+---
+// Original line art, drawn in code. One engraving style for the whole site: hairlines in currentColor.
+interface Props { kind: 'farm' | 'wave' | 'ice' | 'shelf' | 'station' | 'morse'; class?: string }
+const { kind, class: cls } = Astro.props;
+const f = (n: number) => n.toFixed(1);
+
+// Farm: corn rows running to the horizon, and the dust bands on Murph's floor.
+const rows = Array.from({ length: 15 }, (_, i) => {
+  const x = -260 + i * 80;
+  return `M${f(300 + (x - 300) * 0.04)} 210 L${f(x)} 520`;
+});
+const bits = '1011001110100101100111010011010110';
+let bx = 40;
+const bands = [...bits].map((b) => {
+  const w = b === '1' ? 9 : 3;
+  const r = `<rect x="${bx}" y="${430}" width="${w}" height="70" />`;
+  bx += w + 7;
+  return r;
+});
+
+// Miller: a wall of water, one line per contour.
+const wave = Array.from({ length: 18 }, (_, k) => {
+  const h = 330 * (1 - k / 18);
+  const pts: string[] = [];
+  for (let x = 0; x <= 1200; x += 24) {
+    const g = Math.exp(-(((x - 600) / 420) ** 2));
+    const crest = Math.max(0, (x - 600) / 420) * 18 * (1 - k / 18);
+    pts.push(`${x} ${f(400 - h * g - crest + Math.sin(x / 40 + k) * 3)}`);
+  }
+  return `M${pts.join(' L')}`;
+});
+
+// Mann: clouds frozen in layers.
+const ice = Array.from({ length: 9 }, (_, k) => {
+  const cx = 300 + Math.sin(k * 1.7) * 90;
+  const cy = 80 + k * 26;
+  const rx = 260 - Math.abs(k - 4) * 34;
+  return `<ellipse cx="${f(cx)}" cy="${cy}" rx="${f(rx)}" ry="${f(9 + (k % 3) * 4)}" />`;
+});
+
+// Tesseract: the bookshelf repeated into depth along every axis.
+const shelf: string[] = [];
+for (let d = 0; d < 7; d++) {
+  const s = Math.pow(0.68, d);
+  const w = 560 * s, h = 400 * s;
+  const x = 300 - w / 2, y = 220 - h / 2;
+  shelf.push(`<rect x="${f(x)}" y="${f(y)}" width="${f(w)}" height="${f(h)}" />`);
+  for (let c = 1; c < 4; c++) shelf.push(`<line x1="${f(x + (w * c) / 4)}" y1="${f(y)}" x2="${f(x + (w * c) / 4)}" y2="${f(y + h)}" />`);
+  shelf.push(`<line x1="${f(x)}" y1="${f(y + h / 2)}" x2="${f(x + w)}" y2="${f(y + h / 2)}" />`);
+}
+for (const [cx, cy] of [[20, 20], [580, 20], [20, 420], [580, 420]]) shelf.push(`<line x1="${cx}" y1="${cy}" x2="300" y2="220" />`);
+
+// Cooper Station: the inside of a rotating cylinder; the ground curves up overhead.
+const station = Array.from({ length: 11 }, (_, k) => {
+  const r = 40 + k * 26;
+  return `<ellipse cx="300" cy="220" rx="${r * 1.6}" ry="${r}" />`;
+});
+
+// Morse for EUREKA: . / ..- / .-. / . / -.- / .-
+const morse = ['.', '..-', '.-.', '.', '-.-', '.-'];
+let mx = 0;
+const marks: string[] = [];
+for (const letter of morse) {
+  for (const s of letter) {
+    const w = s === '.' ? 14 : 46;
+    marks.push(`<rect x="${mx}" y="0" width="${w}" height="14" />`);
+    mx += w + 12;
+  }
+  mx += 36;
+}
+---
+{kind === 'farm' && (
+  <svg class:list={['art', cls]} viewBox="0 0 600 520" fill="none" stroke="currentColor" stroke-width="1" aria-hidden="true">
+    <line x1="0" y1="210" x2="600" y2="210" />
+    {rows.map((d) => <path d={d} />)}
+    <g fill="currentColor" stroke="none" opacity="0.85" set:html={bands.join('')} />
+  </svg>
+)}
+{kind === 'wave' && (
+  <svg class:list={['art', cls]} viewBox="0 0 1200 420" preserveAspectRatio="none" fill="none" stroke="currentColor" stroke-width="1.2" aria-hidden="true">
+    {wave.map((d) => <path d={d} vector-effect="non-scaling-stroke" />)}
+  </svg>
+)}
+{kind === 'ice' && (
+  <svg class:list={['art', cls]} viewBox="0 0 600 320" fill="none" stroke="currentColor" stroke-width="1" aria-hidden="true" set:html={ice.join('')} />
+)}
+{kind === 'shelf' && (
+  <svg class:list={['art', cls]} viewBox="0 0 600 440" fill="none" stroke="currentColor" stroke-width="1" aria-hidden="true" set:html={shelf.join('')} />
+)}
+{kind === 'station' && (
+  <svg class:list={['art', cls]} viewBox="0 0 600 440" fill="none" stroke="currentColor" stroke-width="1" aria-hidden="true" set:html={station.join('')} />
+)}
+{kind === 'morse' && (
+  <svg class:list={['art', cls]} viewBox={`0 0 ${mx - 36} 14`} fill="currentColor" aria-hidden="true" set:html={marks.join('')} />
+)}

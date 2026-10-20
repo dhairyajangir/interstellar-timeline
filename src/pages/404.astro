@@ -1,0 +1,16 @@
+---
+import Base from '../layouts/Base.astro';
+import Art from '../components/Art.astro';
+import Cta from '../components/Cta.astro';
+---
+<Base title="A gap on the shelf" description="This page fell behind the bookshelf. Head back to the start of the Interstellar timeline, where both clocks read zero.">
+  <section class="lost" data-tone="void" data-clocks="lost" aria-labelledby="lost-title">
+    <Art kind="shelf" class="lost__shelf" />
+    <p class="ch__meta" data-reveal="fade" data-intro>Error 404</p>
+    <h1 id="lost-title" class="lost__title" data-split="lines" data-intro>A gap on the shelf</h1>
+    <p class="lost__text" data-split="lines" data-intro data-delay="0.2">
+      This page fell behind the bookshelf. Somebody on the other side is pushing it back out, but nobody can say what year it will land in.
+    </p>
+    <div data-reveal="up" data-intro data-delay="0.4"><Cta href="/" label="Back to launch" arrow="←" /></div>
+  </section>
+</Base>

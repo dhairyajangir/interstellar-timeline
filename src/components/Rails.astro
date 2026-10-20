@@ -1,0 +1,15 @@
+---
+// The two clocks. They persist across pages; the driver (src/motion/clocks.ts) writes the readouts.
+---
+<aside class="rails" aria-label="The two clocks" transition:persist="rails">
+  <div class="rail rail--cooper">
+    <p class="rail__who" data-ink><span class="rail__name">Cooper</span><span class="rail__sub">Ship clock</span></p>
+    <div class="rail__ruler" aria-hidden="true" data-ink><div class="rail__ticks" data-ticks="ship"></div></div>
+    <p class="rail__read" data-ink><span class="sr-only">Time since launch, for Cooper: </span><span data-clock="ship">0 yr 000 d 00 h 00 m</span></p>
+  </div>
+  <div class="rail rail--earth">
+    <p class="rail__who" data-ink><span class="rail__name">Murph</span><span class="rail__sub" data-clock="earth-label">Earth clock</span></p>
+    <div class="rail__ruler" aria-hidden="true" data-ink><div class="rail__ticks" data-ticks="earth"></div></div>
+    <p class="rail__read" data-ink><span class="sr-only">Time since launch, on Earth: </span><span data-clock="earth">Year 0, 00 mo</span><span class="rail__age" data-clock="murph">Murph 10</span></p>
+  </div>
+</aside>

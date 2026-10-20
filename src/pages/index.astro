@@ -1,0 +1,200 @@
+---
+import Base from '../layouts/Base.astro';
+import Art from '../components/Art.astro';
+import ClockStrip from '../components/ClockStrip.astro';
+import Cta from '../components/Cta.astro';
+import { chapters } from '../data/site';
+
+const [earth, nasa, wormhole, miller, mann, gargantua, murph, station] = chapters;
+const nn = (n: number) => String(n).padStart(2, '0');
+const width = (w: number) => `--wdth:${w}`;
+const signals = [
+  { name: 'Miller', note: 'A water world in a tight orbit around Gargantua.' },
+  { name: 'Edmunds', note: 'Farther out from the black hole, and quiet about the details.' },
+  { name: 'Mann', note: 'Ice and rock, with the most hopeful data of the three.' },
+];
+---
+<Base>
+  <!-- HERO: the two worlds, split. -->
+  <section class="hero" data-tone="split" aria-labelledby="hero-title">
+    <div class="hero__dust" aria-hidden="true" data-tone="dust"></div>
+    <p class="hero__meta" data-reveal="fade" data-intro data-delay="0.5">
+      <span><cite>Interstellar</cite> (2014), in the order it happens</span>
+      <span>Cooper, on the Endurance</span>
+    </p>
+    <h1 id="hero-title" class="hero__title">
+      <span class="hero__one" data-dilate>One trip.</span>
+      <span class="hero__two" data-dilate>Two clocks.</span>
+    </h1>
+    <div class="hero__aside">
+      <p class="hero__who" data-reveal="fade" data-intro data-delay="0.6">Murph, on Earth, age 10</p>
+      <p class="hero__lede" data-split="lines" data-intro data-delay="0.35">
+        A father leaves to find humanity a new home. His daughter stays behind. Gravity makes his hours
+        worth her years, so this timeline keeps a clock for each of them, side by side.
+      </p>
+      <div data-reveal="up" data-intro data-delay="0.6"><Cta href="#earth" label="Start at the farm" /></div>
+    </div>
+  </section>
+
+  <!-- 01 EARTH: asymmetric pair on dust. -->
+  <section id="earth" class="ch ch--earth" data-chapter="0" data-tone="dust" aria-labelledby="t-earth">
+    <figure class="ch__art ch__art--farm" data-reveal="clip"><Art kind="farm" /></figure>
+    <div class="ch__text">
+      <p class="ch__meta"><span class="ch__n">{nn(earth.n)}</span>{earth.place}</p>
+      <h2 id="t-earth" class="ch__title" style={width(earth.wdth)} data-split="lines">{earth.title}</h2>
+      <p class="ch__lede">{earth.lede}</p>
+      {earth.body.map((p) => <p>{p}</p>)}
+      <ClockStrip {...earth.clockNote} />
+    </div>
+  </section>
+
+  <!-- 02 NASA: index of signals and the two plans. -->
+  <section id="nasa" class="ch ch--nasa" data-chapter="1" data-tone="dust" aria-labelledby="t-nasa">
+    <div class="ch__text ch__text--wide">
+      <p class="ch__meta"><span class="ch__n">{nn(nasa.n)}</span>{nasa.place}</p>
+      <h2 id="t-nasa" class="ch__title" style={width(nasa.wdth)} data-split="lines">{nasa.title}</h2>
+      <p class="ch__lede">{nasa.lede}</p>
+    </div>
+    <div class="nasa__cols">
+      <div class="nasa__story">
+        <p>{nasa.body[0]}</p>
+        <p>{nasa.body[1]}</p>
+      </div>
+      <div class="nasa__signals">
+        <h3 class="nasa__label">Three signals still say come</h3>
+        <ol class="signals">
+          {signals.map((s) => (
+            <li class="signals__row" data-reveal="up"><span class="signals__name">{s.name}</span><span class="signals__note">{s.note}</span></li>
+          ))}
+        </ol>
+      </div>
+    </div>
+    <div class="plans">
+      <p class="plans__a"><strong>Plan A.</strong> Solve gravity and lift everyone off Earth.</p>
+      <p class="plans__b"><strong>Plan B.</strong> Frozen embryos, a new world, a fresh start without the people at home.</p>
+    </div>
+    <div class="nasa__leave">
+      <p class="ch__lede">{nasa.body[3]}</p>
+      <ClockStrip {...nasa.clockNote} />
+    </div>
+  </section>
+
+  <!-- 03 WORMHOLE: full-bleed sky. -->
+  <section id="wormhole" class="ch ch--wormhole" data-chapter="2" data-tone="void" aria-labelledby="t-wormhole">
+    <div class="lens lens--door" data-lens="door" aria-hidden="true"><div class="lens__fallback"></div></div>
+    <div class="ch__text">
+      <p class="ch__meta"><span class="ch__n">{nn(wormhole.n)}</span>{wormhole.place}</p>
+      <h2 id="t-wormhole" class="ch__title" style={width(wormhole.wdth)} data-split="lines">{wormhole.title}</h2>
+      <p class="ch__lede">{wormhole.lede}</p>
+      {wormhole.body.map((p) => <p>{p}</p>)}
+      <ClockStrip {...wormhole.clockNote} />
+    </div>
+  </section>
+
+  <!-- 04 MILLER: the signature. A sticky stage; the clocks run across its scroll length. -->
+  <section id="miller" class="ch ch--miller" data-chapter="3" aria-labelledby="t-miller">
+    <div class="miller__track" data-clock-span="sticky" data-tone="split">
+      <div class="miller__stage" data-miller>
+        <h2 id="t-miller" class="miller__title" style={width(miller.wdth)}>
+          <span class="miller__title-l">One hour,</span> <span class="miller__title-r">seven years</span>
+        </h2>
+        <div class="miller__half miller__half--void" data-tone="void">
+          <p class="ch__meta"><span class="ch__n">{nn(miller.n)}</span>{miller.place}</p>
+          <div class="dial" aria-hidden="true">
+            <svg viewBox="0 0 200 200" fill="none" stroke="currentColor">
+              <circle cx="100" cy="100" r="96" stroke-width="1" />
+              {Array.from({ length: 60 }, (_, i) => (
+                <line x1="100" y1={i % 5 ? 8 : 4} x2="100" y2={i % 5 ? 13 : 18} stroke-width={i % 5 ? 1 : 2} transform={`rotate(${i * 6} 100 100)`} />
+              ))}
+            </svg>
+            <span class="dial__hand dial__hand--hour" data-hand="hour"></span>
+            <span class="dial__hand dial__hand--min" data-hand="min"></span>
+          </div>
+          <p class="miller__read"><span class="miller__label">Cooper, on the surface</span><span class="miller__big" data-stage="hours">0 h 00 m</span></p>
+          <div class="miller__wave" data-wave><Art kind="wave" /></div>
+        </div>
+        <div class="miller__half miller__half--dust" data-tone="dust">
+          <p class="miller__read"><span class="miller__label">Earth</span><span class="miller__big" data-stage="year">Year 2</span><span class="miller__age" data-stage="age">Murph is 12</span></p>
+          <div class="miller__wave" data-wave><Art kind="wave" /></div>
+        </div>
+      </div>
+    </div>
+    <div class="miller__after" data-tone="void">
+      <p class="ch__lede">{miller.lede}</p>
+      {miller.body.map((p) => <p>{p}</p>)}
+      <ClockStrip {...miller.clockNote} />
+    </div>
+  </section>
+
+  <!-- 05 MANN: a statement, set large. -->
+  <section id="mann" class="ch ch--mann" data-chapter="4" data-tone="void" aria-labelledby="t-mann">
+    <Art kind="ice" class="mann__ice" />
+    <div class="ch__text ch__text--wide">
+      <p class="ch__meta"><span class="ch__n">{nn(mann.n)}</span>{mann.place}</p>
+      <h2 id="t-mann" class="ch__title" style={width(mann.wdth)} data-split="lines">{mann.title}</h2>
+    </div>
+    <p class="mann__statement" data-split="lines">{mann.lede} {mann.body[0]}</p>
+    <div class="mann__cols">
+      <p>{mann.body[1]}</p>
+      <p>{mann.body[2]}</p>
+    </div>
+    <ClockStrip {...mann.clockNote} />
+  </section>
+
+  <!-- 06 GARGANTUA: sticky black hole, narrative alongside. -->
+  <section id="gargantua" class="ch ch--gargantua" data-chapter="5" data-tone="void" aria-labelledby="t-gargantua">
+    <div class="garg__stick">
+      <div class="lens lens--hole" data-lens="hole" data-lens-scale="0.62" aria-hidden="true"><div class="lens__fallback"></div></div>
+      <Art kind="shelf" class="garg__shelf" />
+    </div>
+    <div class="garg__text">
+      <p class="ch__meta"><span class="ch__n">{nn(gargantua.n)}</span>{gargantua.place}</p>
+      <h2 id="t-gargantua" class="ch__title" style={width(gargantua.wdth)} data-split="lines">{gargantua.title}</h2>
+      <p class="ch__lede">{gargantua.lede}</p>
+      <p>{gargantua.body[0]}</p>
+      <p class="garg__tess">{gargantua.body[1]}</p>
+      <p>{gargantua.body[2]}</p>
+      <p>{gargantua.body[3]}</p>
+      <ClockStrip {...gargantua.clockNote} />
+    </div>
+  </section>
+
+  <!-- 07 MURPH: poster on dust. -->
+  <section id="murph" class="ch ch--murph" data-chapter="6" data-tone="dust" aria-labelledby="t-murph">
+    <p class="ch__meta"><span class="ch__n">{nn(murph.n)}</span>{murph.place}</p>
+    <h2 id="t-murph" class="murph__title">{murph.title}</h2>
+    <p class="murph__word" aria-hidden="true">Eureka</p>
+    <Art kind="morse" class="murph__morse" />
+    <div class="murph__cols">
+      <p class="ch__lede">{murph.lede}</p>
+      <div>
+        {murph.body.map((p) => <p>{p}</p>)}
+        <ClockStrip {...murph.clockNote} />
+      </div>
+    </div>
+  </section>
+
+  <!-- 08 STATION: finale, the two final readings side by side. -->
+  <section id="station" class="ch ch--station" data-chapter="7" data-tone="void" aria-labelledby="t-station">
+    <Art kind="station" class="station__art" />
+    <div class="ch__text ch__text--wide">
+      <p class="ch__meta"><span class="ch__n">{nn(station.n)}</span>{station.place}</p>
+      <h2 id="t-station" class="ch__title" style={width(station.wdth)} data-split="lines">{station.title}</h2>
+      <p class="ch__lede">{station.lede}</p>
+      {station.body.map((p) => <p>{p}</p>)}
+    </div>
+    <div class="final">
+      <div class="final__cell final__cell--cooper">
+        <p class="final__who">Cooper</p>
+        <p class="final__num">124</p>
+        <p class="final__note">years old by the calendar. He has lived about 2.7 of them since launch.</p>
+      </div>
+      <div class="final__cell final__cell--earth">
+        <p class="final__who">Murph</p>
+        <p class="final__num">≈ 94</p>
+        <p class="final__note">years old, if he left at about 40. She was ten when he went.</p>
+      </div>
+    </div>
+    <p class="station__more">The full ledger, with what the film states and what is estimated, is on <a class="link" href="/time/">How the clocks drift</a>.</p>
+  </section>
+</Base>

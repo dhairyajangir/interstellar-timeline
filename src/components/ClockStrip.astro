@@ -1,0 +1,15 @@
+---
+// The two clocks for one chapter, in words, side by side: Cooper on void, Earth on dust.
+interface Props { cooper: string; earth: string }
+const { cooper, earth } = Astro.props;
+---
+<dl class="strip">
+  <div class="strip__cell strip__cell--cooper">
+    <dt>Cooper’s clock</dt>
+    <dd>{cooper}</dd>
+  </div>
+  <div class="strip__cell strip__cell--earth">
+    <dt>Earth clock</dt>
+    <dd>{earth}</dd>
+  </div>
+</dl>

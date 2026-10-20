@@ -1,0 +1,6 @@
+---
+interface Props { href: string; label: string; arrow?: string }
+// ↓ for a jump down this page, ← for going back to another page.
+const { href, label, arrow = "↓" } = Astro.props;
+---
+<a class="btn" href={href} data-fill><span class="btn__fill" aria-hidden="true"></span><span class="btn__label">{label}</span><span class="btn__arrow" data-dir={arrow === "←" ? "left" : "down"} aria-hidden="true">{arrow}</span></a>

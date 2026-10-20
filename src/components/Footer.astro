@@ -1,0 +1,20 @@
+---
+import { nav, site } from '../data/site';
+---
+<footer class="foot" data-tone="void">
+  <div class="foot__grid">
+    <p class="foot__about">
+      {site.name} is an unofficial explainer of <cite>{site.film.name}</cite> ({site.film.year}), directed by {site.film.director}.
+      It is not affiliated with the film or its studios. Every illustration here is drawn in code for this site.
+    </p>
+    <nav class="foot__nav" aria-label="Footer">
+      <ul>
+        {nav.map((n) => (
+          <li><a class="dilate draw" data-text={n.label} href={n.href}><span class="dilate__t">{n.label}</span></a></li>
+        ))}
+        <li><a class="dilate draw" data-text="Back to the top" href="#main"><span class="dilate__t">Back to the top</span></a></li>
+      </ul>
+    </nav>
+    <p class="foot__colophon">Set in Archivo and IBM Plex Mono. Numbers marked ≈ are estimates; the film states the rest.</p>
+  </div>
+</footer>

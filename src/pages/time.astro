@@ -1,0 +1,114 @@
+---
+import Base from '../layouts/Base.astro';
+import Cta from '../components/Cta.astro';
+import { ledger } from '../data/site';
+---
+<Base
+  title="How the clocks drift"
+  description="Why one hour on Miller’s planet costs seven years on Earth, a slider to try it, and every age in Interstellar side by side, stated or estimated."
+>
+  <section class="tp-hero" data-tone="void" aria-labelledby="tp-title">
+    <p class="ch__meta" data-reveal="fade" data-intro>Time dilation, explained without equations</p>
+    <h1 id="tp-title" class="tp-hero__title" data-split="lines" data-intro>How the clocks drift</h1>
+    <p class="tp-hero__lede" data-split="lines" data-intro data-delay="0.2">
+      Two people can both feel time pass normally and still disagree, afterwards, about how much of it passed.
+      Gravity is what pulls them apart.
+    </p>
+    <p class="tp-rate">
+      <span class="tp-rate__a"><span class="tp-rate__n">1</span> hour on Miller’s planet</span>
+      <span class="tp-rate__b"><span class="tp-rate__n">7</span> years on Earth</span>
+    </p>
+  </section>
+
+  <section class="try" data-tone="split" aria-labelledby="try-title">
+    <div class="try__half try__half--void" data-tone="void">
+      <h2 id="try-title" class="try__title">Stand on Miller’s planet</h2>
+      <p class="try__hint">Move the slider to choose how long you stay. The clocks in the margins follow it.</p>
+      <label class="try__label" for="hours">Time on the surface</label>
+      <input class="try__range" id="hours" type="range" min="0" max="360" step="5" value="200" aria-valuetext="3 hours 20 minutes" />
+      <output class="try__big" for="hours" data-try="hours">3 h 20 m</output>
+    </div>
+    <div class="try__half try__half--dust" data-tone="dust">
+      <p class="try__label">Meanwhile on Earth</p>
+      <output class="try__big" for="hours" data-try="years">23.3 years</output>
+      <output class="try__age" for="hours" data-try="age">Murph goes from 12 to 35</output>
+      <p class="try__note">The slider starts where the film does: about 3 hours 20 minutes, the 23 years Romilly counted.</p>
+    </div>
+  </section>
+
+  <section class="why" data-tone="void" aria-labelledby="why-title">
+    <h2 id="why-title" class="why__title" data-split="lines">Why gravity slows a clock</h2>
+    <div class="why__grid">
+      <p>A clock deep in a gravity well ticks slower than a clock far from it. Neither owner notices anything strange. The difference only appears when the two clocks are compared.</p>
+      <p>Gargantua is huge and spins close to the limit physics allows, which lets a planet orbit very near it without falling in. Miller’s world sits in that orbit, about as deep in the well as anything can stay.</p>
+      <p>The film puts the exchange rate at one hour for seven years: roughly 61,000 hours outside for every hour on the surface. The Endurance waits much farther out, so Romilly ages almost as fast as Earth does.</p>
+      <p>The physicist Kip Thorne advised the production. The tesseract is the one place the story goes past known physics, a room where time is laid out like a corridor, and it is why the Earth clock on the timeline runs backwards there.</p>
+    </div>
+  </section>
+
+  <section class="ledger" data-tone="dust" aria-labelledby="ledger-title">
+    <h2 id="ledger-title" class="ledger__title">Every age, side by side</h2>
+    <div class="ledger__scroll" tabindex="0" role="region" aria-labelledby="ledger-title">
+      <table>
+        <thead>
+          <tr><th scope="col">Moment</th><th scope="col">Cooper’s clock</th><th scope="col">Earth clock</th><th scope="col">Murph’s age</th><th scope="col">Where the number comes from</th></tr>
+        </thead>
+        <tbody>
+          {ledger.map((r) => (
+            <tr><th scope="row">{r.event}</th><td data-label="Cooper’s clock">{r.cooper}</td><td data-label="Earth clock">{r.earth}</td><td data-label="Murph’s age">{r.murph}</td><td data-label="Source">{r.source}</td></tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="notes" data-tone="void" aria-labelledby="notes-title">
+    <h2 id="notes-title" class="notes__title">Stated, or estimated</h2>
+    <div class="notes__grid">
+      <div>
+        <h3 class="notes__h">The film says</h3>
+        <ul>
+          <li>About two years to reach Saturn.</li>
+          <li>One hour on Miller’s planet equals seven years on Earth.</li>
+          <li>Romilly waited 23 years, 4 months and 8 days.</li>
+          <li>The slingshot around Gargantua costs 51 years.</li>
+          <li>On Cooper Station, Cooper is 124 years old.</li>
+        </ul>
+      </div>
+      <div>
+        <h3 class="notes__h">This site assumes</h3>
+        <ul>
+          <li>Murph is ten when her father leaves.</li>
+          <li>The leg from Miller’s planet to Mann’s takes months, not years.</li>
+          <li>Cooper is about 40 at launch, so 124 means about 84 years have passed on Earth, and Murph is about 94.</li>
+        </ul>
+      </div>
+    </div>
+    <Cta href="/#earth" label="Back to the timeline" arrow="←" />
+  </section>
+
+  <script>
+    import { onPage } from '../engine';
+    import { setClockOverride } from '../motion/clocks';
+    import { MILLER_RATIO } from '../data/site';
+
+    onPage(() => {
+      const input = document.querySelector<HTMLInputElement>('#hours');
+      if (!input) return;
+      const outs = (k: string) => document.querySelector<HTMLElement>(`[data-try="${k}"]`)!;
+      const update = () => {
+        const h = parseFloat(input.value) / 60;
+        const years = (h * MILLER_RATIO) / 8760;
+        const mins = Math.round(h * 60);
+        outs('hours').textContent = `${Math.floor(mins / 60)} h ${String(mins % 60).padStart(2, '0')} m`;
+        input.setAttribute('aria-valuetext', `${Math.floor(mins / 60)} hours ${mins % 60} minutes`);
+        outs('years').textContent = `${years.toFixed(years < 10 ? 2 : 1)} years`;
+        outs('age').textContent = h === 0 ? 'Murph stays 12' : `Murph goes from 12 to ${Math.floor(12 + years)}`;
+        setClockOverride({ earth: 2 + years, ship: 2 + h / 8766, rate: MILLER_RATIO });
+      };
+      input.addEventListener('input', update);
+      update();
+      return () => input.removeEventListener('input', update);
+    });
+  </script>
+</Base>

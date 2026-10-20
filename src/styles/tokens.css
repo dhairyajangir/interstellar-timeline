@@ -1,0 +1,77 @@
+/* Two Clocks: design tokens. Two worlds: void (space, Cooper) and dust (Earth, Murph). */
+
+@font-face {
+  font-family: 'Archivo';
+  src: url('/fonts/archivo-100_900-normal.woff2') format('woff2');
+  font-weight: 100 900;
+  font-style: normal;
+  font-stretch: 62% 125%;
+  font-display: swap;
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'Plex Mono';
+  src: url('/fonts/plex-mono-400-normal.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'Plex Mono';
+  src: url('/fonts/plex-mono-500-normal.woff2') format('woff2');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+:root {
+  /* The two worlds */
+  --void: #060708;
+  --star: #ece7dc;
+  --dust: #c9b48f;
+  --soot: #17130e;
+  --muted: #958f84;      /* secondary on void, 6.1:1 */
+  --muted-dust: #4a3f30; /* secondary on dust, 6.9:1 */
+
+  /* Engine roles */
+  --c-bg: var(--void);
+  --c-fg: var(--star);
+  --c-muted: var(--muted);
+  --c-line: rgb(236 231 220 / 0.16);
+  --c-accent: var(--dust);
+  --c-curtain: var(--void);
+
+  --f-display: 'Archivo', 'Arial Narrow', system-ui, sans-serif;
+  --f-body: 'Archivo', system-ui, sans-serif;
+  --f-mono: 'Plex Mono', ui-monospace, 'Cascadia Mono', monospace;
+
+  /* Fluid type scale (375 → 1440) */
+  --t-mega: clamp(3.4rem, 0.6rem + 12vw, 13.5rem);
+  --t-xl: clamp(2.6rem, 1.2rem + 5.4vw, 7rem);
+  --t-l: clamp(1.6rem, 1.2rem + 1.8vw, 2.9rem);
+  --t-m: clamp(1.2rem, 1.08rem + 0.55vw, 1.6rem);
+  --t-body: clamp(1rem, 0.96rem + 0.18vw, 1.0625rem);
+  --t-s: 0.875rem;
+  --t-xs: 0.75rem;
+
+  --u: clamp(0.5rem, 0.35rem + 0.6vw, 1rem);
+  --gutter: clamp(1rem, 0.6rem + 1.6vw, 2.5rem);
+  /* The clock rails live in the outer margins on wide screens. */
+  --rail: 0px;
+
+  --radius: 0px;
+
+  --z-gl: 0;
+  --z-content: 1;
+  --z-rails: 95; /* above the curtain: the clocks keep running through the wormhole */
+  --z-header: 50;
+  --z-cursor: 80;
+  --z-curtain: 90;
+  --z-loader: 100;
+}
+
+@media (min-width: 768px) {
+  :root { --rail: clamp(7.5rem, 5rem + 6vw, 10.5rem); }
+}
