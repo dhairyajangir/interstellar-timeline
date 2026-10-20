@@ -63,11 +63,43 @@
       900
     ]
   },
+  "plunge-flyby": {
+    "w": 3840,
+    "h": 1700,
+    "widths": [
+      1920,
+      960
+    ]
+  },
+  "plunge-horizon": {
+    "w": 3840,
+    "h": 2160,
+    "widths": [
+      1920,
+      960
+    ]
+  },
+  "plunge-ring": {
+    "w": 6144,
+    "h": 3456,
+    "widths": [
+      1920,
+      960
+    ]
+  },
   "ranger": {
     "w": 597,
     "h": 335,
     "widths": [
       597
+    ]
+  },
+  "tesseract": {
+    "w": 1280,
+    "h": 620,
+    "widths": [
+      1280,
+      800
     ]
   },
   "tars-miller": {

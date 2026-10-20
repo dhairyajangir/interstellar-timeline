@@ -4,8 +4,26 @@ import Art from '../components/Art.astro';
 import ClockStrip from '../components/ClockStrip.astro';
 import Cta from '../components/Cta.astro';
 import Photo from '../components/Photo.astro';
-import { photos } from '../data/photos';
+import { photos, size, type Photo as PhotoData } from '../data/photos';
 import { chapters } from '../data/site';
+
+// Plain <img> attributes for layered images that don't need a Photo frame.
+const img = (p: PhotoData, sizes: string) => {
+  const s = size(p);
+  return {
+    src: `/img/${p.name}-${s.widths[0]}.webp`,
+    srcset: s.widths.map((w) => `/img/${p.name}-${w}.webp ${w}w`).join(', '),
+    sizes, width: s.w, height: s.h, loading: 'lazy' as const, decoding: 'async' as const,
+  };
+};
+// Falling into Gargantua, in order. Keys drive src/motion/setup.ts (fallSequence).
+const fall = [
+  { key: 'approach', label: 'Approach', photo: photos.blackhole },
+  { key: 'disk', label: 'Through the disk', photo: photos.plungeDisk },
+  { key: 'horizon', label: 'The sky folds over', photo: photos.plungeHorizon },
+  { key: 'ring', label: 'Past the horizon', photo: photos.plungeRing },
+  { key: 'tess', label: 'The tesseract', photo: photos.tesseract },
+];
 
 const [earth, nasa, wormhole, miller, mann, gargantua, murph, station] = chapters;
 const nn = (n: number) => String(n).padStart(2, '0');
@@ -156,9 +174,22 @@ const signals = [
 
   <!-- 06 GARGANTUA: sticky black hole, narrative alongside. -->
   <section id="gargantua" class="ch ch--gargantua" data-chapter="5" data-tone="void" aria-labelledby="t-gargantua">
-    <div class="garg__stick">
-      <div class="lens lens--hole" data-hole><Photo photo={photos.blackhole} frame="bleed" caption={false} reveal={false} parallax={false} sizes="(min-width: 768px) 46vw, 100vw" /></div>
-      <Art kind="shelf" class="garg__shelf" />
+    <!-- The fall: five real frames, scrubbed by scroll, end in the tesseract corridor. -->
+    <div class="garg__stick fall" data-fall>
+      {fall.map((f) => (
+        <figure class={`fall__layer fall__layer--${f.key}`} data-fall-layer={f.key} data-caption={f.label} data-credit={f.photo.credit}>
+          {f.key === 'tess' ? (
+            <div class="tess" data-tess>
+              {[0, 1, 2, 3, 4].map((k) => (
+                <img class="tess__copy" style={`--k:${k}`} {...img(f.photo, '100vw')} alt={k ? '' : f.photo.alt} aria-hidden={k ? 'true' : undefined} />
+              ))}
+            </div>
+          ) : (
+            <img {...img(f.photo, '100vw')} alt={f.photo.alt} />
+          )}
+        </figure>
+      ))}
+      <p class="fall__caption" aria-hidden="true"><span data-fall-label>Approach</span><span data-fall-credit>{photos.blackhole.credit}</span></p>
     </div>
     <div class="garg__text">
       <p class="ch__meta"><span class="ch__n">{nn(gargantua.n)}</span>{gargantua.place}</p>

@@ -162,3 +162,16 @@ GARGANTUA (sticky narrative)       MURPH (poster)                  STATION (foot
   hole swells as you fall toward it; Murph's watch hand ticks EUREKA in Morse (idle, on screen only).
 - **Removing film stills:** delete their entries in `src/data/photos.ts` and the `film` jobs in
   `scripts/grade.mjs`; the layout keeps working without them.
+
+## The fall (Gargantua, chapter 06)
+
+- A full-bleed sticky stage under the chapter text, scrubbed by scroll: Goddard's 2019 black hole
+  (approach), then three frames from NASA Goddard's 2024 plunge simulation (through the disk, the
+  sky folding over the horizon, the photon ring past the horizon), then the tesseract.
+- Each frame takes over by pushing through the last: the old one swells and burns out, the new
+  one settles in from stretched. The handover to the tesseract sits at 40% of the chapter, the
+  same point where the Earth clock starts to rewind.
+- The tesseract is the production still of the set, nested five times inside itself; at rest the
+  nest zooms by one step and loops, so the corridor never ends (idle motion, on screen only).
+- A caption names the frame and credits it. Phones hide the caption (credits stay in the footer)
+  and put paragraphs on dark plates. Reduced motion shows the frames one after another.

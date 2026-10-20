@@ -88,10 +88,7 @@ function imageMotion() {
       gsap.fromTo(el, { rotate: -9 }, { rotate: 9, ease: 'none', scrollTrigger: { trigger: el, start: 'top bottom', end: 'bottom top', scrub: true } });
     });
 
-    // Gargantua swells as you fall toward it.
-    document.querySelectorAll<HTMLElement>('[data-hole]').forEach((el) => {
-      gsap.fromTo(el, { scale: 0.86 }, { scale: 1.18, ease: 'none', scrollTrigger: { trigger: el.closest('section'), start: 'top bottom', end: 'bottom top', scrub: true } });
-    });
+    fallSequence();
 
     // Murph's watch: the second hand ticks EUREKA, a short wait for a dot and a long one for a dash.
     const hand = document.querySelector<SVGElement>('[data-morse-hand]');
@@ -107,6 +104,59 @@ function imageMotion() {
       whileVisible(hand, tl);
     }
   });
+}
+
+// Falling into Gargantua. One scrubbed timeline over the chapter: each real frame takes over from
+// the last by pushing through it (the old one swells and burns out, the new one settles in from
+// stretched), ending in the tesseract, whose nested copies then zoom forever at rest.
+// The handover to the tesseract sits at 40% of the chapter, where the Earth clock starts to rewind.
+function fallSequence() {
+  const stage = document.querySelector<HTMLElement>('[data-fall]');
+  if (!stage) return;
+  const L = (k: string) => stage.querySelector<HTMLElement>(`[data-fall-layer="${k}"]`)!;
+  const [approach, disk, horizon, ring, tess] = ['approach', 'disk', 'horizon', 'ring', 'tess'].map(L);
+  const label = stage.querySelector<HTMLElement>('[data-fall-label]');
+  const credit = stage.querySelector<HTMLElement>('[data-fall-credit]');
+  const layers = [approach, disk, horizon, ring, tess];
+  const HANDOVERS = [0.13, 0.24, 0.33, 0.39]; // progress where each frame takes over, matching the timeline below
+
+  const tl = gsap.timeline({
+    defaults: { ease: 'none' },
+    scrollTrigger: {
+      trigger: stage.closest('section'), start: 'top top', end: 'bottom bottom', scrub: 0.6, invalidateOnRefresh: true,
+      onUpdate: (s) => {
+        // The caption names the frame on screen and credits it (read from the scroll, not the lagging scrub).
+        const top = layers[HANDOVERS.filter((h) => s.progress >= h).length];
+        if (label && label.textContent !== top.dataset.caption) label.textContent = top.dataset.caption!;
+        if (credit && credit.textContent !== top.dataset.credit) credit.textContent = top.dataset.credit!;
+        stage.classList.toggle('is-inside', s.progress > 0.4);
+      },
+    },
+  });
+  // 0 → 0.14: the approach, Gargantua growing in the window.
+  tl.fromTo(approach, { scale: 0.85 }, { scale: 2.4, duration: 0.18 }, 0)
+    .to(approach, { autoAlpha: 0, duration: 0.05 }, 0.13)
+    // 0.12 → 0.24: through the disk, light smeared into bands.
+    .fromTo(disk, { autoAlpha: 0, scale: 1.4, yPercent: 12 }, { autoAlpha: 1, scale: 1, yPercent: 0, duration: 0.08 }, 0.12)
+    .to(disk, { scale: 1.6, yPercent: -18, duration: 0.1 }, 0.2)
+    .to(disk, { autoAlpha: 0, duration: 0.04 }, 0.24)
+    // 0.24 → 0.33: the sky folds into a bowl over the horizon.
+    .fromTo(horizon, { autoAlpha: 0, scale: 1.3, rotate: -4 }, { autoAlpha: 1, scale: 1, rotate: 0, duration: 0.07 }, 0.24)
+    .to(horizon, { scale: 1.35, yPercent: 10, duration: 0.08 }, 0.3)
+    .to(horizon, { autoAlpha: 0, duration: 0.03 }, 0.33)
+    // 0.33 → 0.4: past the horizon, the ring pulls away and everything goes dark.
+    .fromTo(ring, { autoAlpha: 0, scale: 0.9 }, { autoAlpha: 1, scale: 1.15, duration: 0.04 }, 0.33)
+    .to(ring, { scale: 2.6, autoAlpha: 0, duration: 0.05 }, 0.36)
+    // 0.4 → 1: the tesseract opens out of the dark.
+    .fromTo(tess, { autoAlpha: 0, scale: 0.6, clipPath: 'inset(45% 45% 45% 45%)' }, { autoAlpha: 1, scale: 1, clipPath: 'inset(0% 0% 0% 0%)', duration: 0.1 }, 0.4)
+    .to(tess, { scale: 1.12, duration: 0.5 }, 0.5);
+
+  // At rest inside, the corridor keeps falling: zoom by one nesting step and loop seamlessly.
+  const zoom = stage.querySelector<HTMLElement>('[data-tess]');
+  if (zoom) {
+    const loop = gsap.fromTo(zoom, { scale: 1 }, { scale: 1 / 0.55, duration: 9, ease: 'none', repeat: -1, paused: true });
+    ScrollTrigger.create({ trigger: stage.closest('section'), start: '40% top', end: 'bottom top', onToggle: (s) => (s.isActive ? loop.play() : loop.pause()) });
+  }
 }
 
 // The header slides away while reading down and returns on the way up.

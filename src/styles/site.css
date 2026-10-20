@@ -300,13 +300,33 @@ html:not(.motion) .miller__wave { height: 28%; opacity: 0.4; }
 .ch--mann .strip { grid-column: 3 / span 7; }
 
 /* 06 Gargantua: sticky black hole, then the tesseract */
-.ch--gargantua { align-items: start; padding-top: calc(var(--u) * 4); }
-.garg__stick { grid-column: 1 / span 6; position: sticky; top: 0; height: 100svh; }
-.garg__shelf { position: absolute; left: 50%; top: 50%; width: min(42vw, 34rem); translate: -50% -50%; opacity: 0; transition: opacity 1.2s cubic-bezier(0.16, 1, 0.3, 1); color: var(--dust); }
-html.any-year .garg__shelf { opacity: 0.85; }
-.garg__text { grid-column: 8 / span 5; padding-block: 4svh 10svh; }
-.garg__text > p:not([class]), .garg__tess { margin-top: 16svh; max-width: 40ch; }
+/* 06 Gargantua: the fall. A full-bleed sticky stage of real frames; the chapter scrolls over it. */
+.ch--gargantua { align-items: start; padding-top: 0; }
+.fall { grid-column: 1 / -1; grid-row: 1; position: sticky; top: 0; height: 100svh; margin-inline: calc((var(--rail) + var(--gutter)) * -1); overflow: clip; background: var(--void); }
+.fall__layer { position: absolute; inset: 0; margin: 0; opacity: 0; }
+.fall__layer img { width: 100%; height: 100%; object-fit: cover; }
+.fall__layer--approach { opacity: 1; }
+.fall__layer--approach img { object-fit: contain; padding: 12svh 6vw; }
+/* The tesseract: the set photo nested in itself, so the corridor never ends. */
+.tess { position: absolute; inset: 0; }
+.tess__copy { position: absolute; inset: 0; box-shadow: 0 0 0 1px rgb(201 180 143 / 0.35), 0 0 60px rgb(0 0 0 / 0.9); }
+.tess__copy:nth-child(2) { scale: 0.55; }
+.tess__copy:nth-child(3) { scale: 0.3025; }
+.tess__copy:nth-child(4) { scale: 0.1664; }
+.tess__copy:nth-child(5) { scale: 0.0915; }
+/* Text over the frames stays on a dark field on its side of the stage. */
+.fall::after { content: ''; position: absolute; inset: 0; pointer-events: none; background: linear-gradient(90deg, transparent 30%, rgb(6 7 8 / 0.55) 52%, rgb(6 7 8 / 0.9) 70%); }
+.fall__caption { padding: 0.6rem 0.8rem; margin-left: -0.8rem; background: rgb(6 7 8 / 0.72); position: absolute; z-index: 2; left: calc(var(--rail) + var(--gutter)); bottom: calc(var(--u) * 4); display: grid; gap: 0.3em; font-family: var(--f-mono); font-size: var(--t-xs); color: var(--star); max-width: 34ch; }
+.fall__caption [data-fall-credit] { color: var(--muted); }
+.garg__text { grid-column: 8 / span 5; grid-row: 1; position: relative; z-index: 1; padding-block: 18svh 30svh; }
+.garg__text > p:not([class]), .garg__tess { margin-top: 30svh; max-width: 40ch; }
 .garg__text .ch__lede { margin-top: 0; }
+/* Without motion the frames simply follow one another. */
+html:not(.motion) .fall { position: relative; height: auto; display: grid; }
+html:not(.motion) .fall__layer { position: relative; opacity: 1; aspect-ratio: 16 / 9; }
+html:not(.motion) .fall::after, html:not(.motion) .fall__caption { display: none; }
+html:not(.motion) .garg__text { grid-row: 2; }
+html:not(.motion) .garg__text > p:not([class]), html:not(.motion) .garg__tess { margin-top: 1em; }
 
 /* 07 Murph: the answer */
 .ch--murph { row-gap: calc(var(--u) * 3); }
@@ -449,10 +469,12 @@ html.any-year .garg__shelf { opacity: 0.85; }
 
   .mann__cols { grid-template-columns: 1fr; }
 
-  .garg__stick { position: relative; height: 60svh; grid-column: 1; }
-  .garg__shelf { width: 86vw; }
-  .garg__text { grid-column: 1; padding-block: 0; }
-  .garg__text > p:not([class]), .garg__tess { margin-top: 1.2em; }
+  .fall { grid-column: 1; }
+  .fall::after { background: rgb(6 7 8 / 0.45); }
+  .fall__caption { display: none; }
+  .garg__text { grid-column: 1; padding-block: 30svh 20svh; }
+  .garg__text > p:not([class]), .garg__tess, .garg__text .ch__lede { background: rgb(6 7 8 / 0.78); padding: 0.9rem 1rem; margin-inline: -1rem; }
+  .garg__text > p:not([class]), .garg__tess { margin-top: 40svh; }
 
   .final { grid-template-columns: 1fr; }
 
@@ -528,9 +550,6 @@ html.any-year .garg__shelf { opacity: 0.85; }
 .mann__ranger .photo__frame { aspect-ratio: 597 / 335; }
 
 /* Gargantua: Goddard's simulation is the black hole. */
-.lens--hole { left: 50%; top: 50%; width: min(46vw, 42rem); aspect-ratio: auto; translate: -50% -50%; }
-.lens--hole .photo__frame { aspect-ratio: 1024 / 560; }
-.lens--hole .photo { --bleed: var(--void); }
 
 /* Murph: the Dust Bowl town behind the word; the watch beside the answer. */
 .ch--murph { overflow: clip; }
@@ -557,6 +576,5 @@ html.any-year .garg__shelf { opacity: 0.85; }
   .miller__photo { position: static; grid-column: 1; }
   .miller__copy { grid-column: 1; }
   .mann__cols { grid-template-columns: 1fr; }
-  .lens--hole { width: 92vw; }
   .murph__town .photo__frame { height: 60svh; }
 }
