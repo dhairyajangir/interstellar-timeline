@@ -31,5 +31,8 @@ npm run preview    # serve the production build
 Vercel builds this project with `npm run build` and serves `dist/`.
 The production domain is `https://interstellar-timeline.vercel.app`.
 
+The GitHub repository is connected to Vercel. Pushes to `main` automatically build
+and deploy the production site.
+
 If the production domain changes, update `astro.config.mjs`, `src/data/site.ts` and
 `public/robots.txt` together.
