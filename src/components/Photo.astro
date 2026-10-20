@@ -1,0 +1,30 @@
+---
+// A graded photograph in a clipped frame. The frame dilates open (data-reveal="dilate"), the
+// image drifts inside it (data-parallax), and the credit sits underneath.
+import { size, type Photo } from '../data/photos';
+
+interface Props {
+  photo: Photo;
+  sizes?: string;
+  class?: string;
+  eager?: boolean;
+  parallax?: number | false;
+  reveal?: boolean;
+  caption?: boolean;
+  frame?: 'print' | 'bleed' | 'round';
+  [key: `data-${string}`]: string | boolean | undefined;
+}
+const { photo, sizes = '(min-width: 768px) 50vw, 100vw', class: cls, eager = false, parallax = 0.08, reveal = true, caption = true, frame = 'print', ...rest } = Astro.props;
+const s = size(photo);
+const srcset = s.widths.map((w) => `/img/${photo.name}-${w}.webp ${w}w`).join(', ');
+const src = `/img/${photo.name}-${s.widths[0]}.webp`;
+---
+<figure class:list={['photo', `photo--${frame}`, cls]} style={`--ar:${s.w} / ${s.h}`} data-tone={photo.tone ?? 'void'} data-film={photo.film ? '' : undefined} {...rest}>
+  <div class="photo__frame" data-reveal={reveal ? 'dilate' : undefined}>
+    <div class="photo__inner" data-parallax={parallax || undefined}>
+      <img src={src} srcset={srcset} sizes={sizes} width={s.w} height={s.h} alt={photo.alt}
+        loading={eager ? 'eager' : 'lazy'} decoding="async" />
+    </div>
+  </div>
+  {caption && <figcaption class="photo__credit">{photo.credit}</figcaption>}
+</figure>

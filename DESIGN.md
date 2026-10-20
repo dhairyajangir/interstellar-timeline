@@ -144,3 +144,21 @@ GARGANTUA (sticky narrative)       MURPH (poster)                  STATION (foot
   running while you travel between pages.
 - **Prefetch off:** Astro's prefetch-all cost seconds of main thread on slow phones; the
   transition already overlaps the fetch.
+
+## Imagery pass (real photographs and film stills)
+
+- **Sources:** public-domain photographs (NASA Cassini, Goddard's black-hole simulation, NASA Ames
+  1976 colony study, ISS Earth limb, Antarctica; Arthur Rothstein's 1936 Dust Bowl photograph; a
+  USDA Dust Bowl photograph) plus owner-supplied film stills (Ranger docking, TARS on Miller's
+  planet, Gargantua, the watch). Fan renders, fan builds and the watermarked stock photo were left
+  out. Credits sit under each photo and in the footer.
+- **Grade:** `scripts/grade.mjs` maps every image into the two worlds (void: black to starlight;
+  dust: soot to pale dust; fire for Gargantua) with fixed grain, so photographs from 1936, 1976
+  and 2019 read as one series. Re-run it after changing sources.
+- **Motion verb on photos:** frames dilate open from their centre line while the image settles
+  from stretched to rest (`data-reveal="dilate"`), then drift inside the frame on scroll.
+- **Story motion:** the code-drawn Endurance ring turns in the hero (idle) and falls into the
+  wormhole sphere (scrub); the Ranger still turns as you read about the docking; Goddard's black
+  hole swells as you fall toward it; Murph's watch hand ticks EUREKA in Morse (idle, on screen only).
+- **Removing film stills:** delete their entries in `src/data/photos.ts` and the `film` jobs in
+  `scripts/grade.mjs`; the layout keeps working without them.

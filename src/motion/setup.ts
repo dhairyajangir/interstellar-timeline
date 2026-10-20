@@ -1,5 +1,6 @@
 // Global motion for Two Clocks: runs once on the client, before the first page initializes.
 import { gsap } from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { ease, isMobile, isTouch, onPage, onScroll, prefersReducedMotion, setLoaderExit, setLoaderFormat, setTransition } from '../engine';
 import { onClocks, startClocks } from './clocks';
 
@@ -32,6 +33,7 @@ export function setupMotion() {
   startClocks();
   dilateIntro();
   frameStepsAside();
+  imageMotion();
   buttonFill();
   millerStage();
 }
@@ -48,6 +50,62 @@ function dilateIntro() {
     const rest = getComputedStyle(els[0]).fontVariationSettings;
     gsap.set(els, { fontVariationSettings: '"wdth" 62' }); // narrower than rest: never grows past the first paint (LCP, CLS)
     intro.add(gsap.to(els, { fontVariationSettings: rest, duration: 1.6, ease: ease.out, stagger: 0.12 }), 0);
+  });
+}
+
+// The ships and the watch move the way they do in the story. Idle loops run on the GSAP clock and
+// pause off screen; scrubbed ones follow the reader. Nothing moves under reduced motion.
+const MORSE_EUREKA = '. ..- .-. . -.- .-'; // dot: short pause before the next tick, dash: long
+
+function imageMotion() {
+  onPage(() => {
+    if (prefersReducedMotion()) return;
+    const whileVisible = (el: Element, anim: gsap.core.Animation) => {
+      anim.pause();
+      ScrollTrigger.create({ trigger: el, start: 'top bottom', end: 'bottom top', onToggle: (s) => (s.isActive ? anim.play() : anim.pause()) });
+    };
+
+    // The Endurance turns to make its own gravity.
+    document.querySelectorAll<HTMLElement>('[data-spin]').forEach((el) => {
+      whileVisible(el, gsap.to(el, { rotate: 360, duration: parseFloat(el.dataset.spin || '90'), ease: 'none', repeat: -1 }));
+    });
+
+    // Approaching Saturn, the ring drifts into the sphere and shrinks away.
+    const ring = document.querySelector<HTMLElement>('[data-approach]');
+    const door = document.querySelector<HTMLElement>('[data-lens="door"]');
+    if (ring && door) {
+      const to = () => {
+        const a = ring.getBoundingClientRect(), b = door.getBoundingClientRect();
+        return { x: b.left + b.width / 2 - (a.left + a.width / 2), y: b.top + b.height / 2 - (a.top + a.height / 2) };
+      };
+      gsap.timeline({ scrollTrigger: { trigger: ring.parentElement, start: 'top 60%', end: 'bottom 40%', scrub: 1, invalidateOnRefresh: true } })
+        .fromTo(ring, { x: 0, y: 0, scale: 1, rotate: 0 }, { x: () => to().x, y: () => to().y, scale: 0.15, rotate: 140, ease: 'power2.in' })
+        .to(ring, { autoAlpha: 0, duration: 0.15 }, 0.85);
+    }
+
+    // Docking: the Ranger turns to match the tumbling ship while you read about it.
+    document.querySelectorAll<HTMLElement>('[data-spin-scrub]').forEach((el) => {
+      gsap.fromTo(el, { rotate: -9 }, { rotate: 9, ease: 'none', scrollTrigger: { trigger: el, start: 'top bottom', end: 'bottom top', scrub: true } });
+    });
+
+    // Gargantua swells as you fall toward it.
+    document.querySelectorAll<HTMLElement>('[data-hole]').forEach((el) => {
+      gsap.fromTo(el, { scale: 0.86 }, { scale: 1.18, ease: 'none', scrollTrigger: { trigger: el.closest('section'), start: 'top bottom', end: 'bottom top', scrub: true } });
+    });
+
+    // Murph's watch: the second hand ticks EUREKA, a short wait for a dot and a long one for a dash.
+    const hand = document.querySelector<SVGElement>('[data-morse-hand]');
+    if (hand) {
+      const tl = gsap.timeline({ repeat: -1, repeatDelay: 1.6 });
+      let angle = 0;
+      for (const ch of MORSE_EUREKA) {
+        if (ch === ' ') { tl.to({}, { duration: 0.6 }); continue; }
+        angle += 6;
+        tl.to(hand, { rotate: angle, svgOrigin: '50 50', duration: 0.12, ease: 'back.out(3)' });
+        tl.to({}, { duration: ch === '.' ? 0.22 : 0.7 });
+      }
+      whileVisible(hand, tl);
+    }
   });
 }
 

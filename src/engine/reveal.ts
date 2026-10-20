@@ -49,6 +49,7 @@ function splitTween(el: HTMLElement, isIntro: boolean) {
 
 function blockTween(el: HTMLElement, paused: boolean) {
   const kind = el.dataset.reveal || 'up';
+  if (kind === 'dilate') return dilateTween(el, paused);
   const delay = parseFloat(el.dataset.delay || '0');
   const from: gsap.TweenVars =
     kind === 'fade' ? { autoAlpha: 0 }
@@ -67,6 +68,17 @@ function blockTween(el: HTMLElement, paused: boolean) {
     paused,
     scrollTrigger: paused ? undefined : { trigger: el, start: 'top 90%', once: true },
   });
+}
+
+// Project reveal: a frame opens outward from its centre line while the image inside settles from
+// stretched to rest. The motion verb of this site (time dilating), applied to photographs.
+function dilateTween(el: HTMLElement, paused: boolean) {
+  const img = el.querySelector('img');
+  gsap.set(el, { visibility: 'visible' });
+  const delay = parseFloat(el.dataset.delay || '0');
+  return gsap.timeline({ paused, delay, scrollTrigger: paused ? undefined : { trigger: el, start: 'top 88%', once: true } })
+    .fromTo(el, { clipPath: 'inset(0% 50% 0% 50%)' }, { clipPath: 'inset(0% 0% 0% 0%)', duration: 1.5, ease: ease.out })
+    .fromTo(img, { scaleX: 1.35, scaleY: 1.08 }, { scaleX: 1, scaleY: 1, duration: 1.9, ease: ease.out }, 0);
 }
 
 /** Wire every reveal inside `root`. Returns the intro timeline (paused) for the page entrance. */

@@ -3,6 +3,8 @@ import Base from '../layouts/Base.astro';
 import Art from '../components/Art.astro';
 import ClockStrip from '../components/ClockStrip.astro';
 import Cta from '../components/Cta.astro';
+import Photo from '../components/Photo.astro';
+import { photos } from '../data/photos';
 import { chapters } from '../data/site';
 
 const [earth, nasa, wormhole, miller, mann, gargantua, murph, station] = chapters;
@@ -18,6 +20,10 @@ const signals = [
   <!-- HERO: the two worlds, split. -->
   <section class="hero" data-tone="split" aria-labelledby="hero-title">
     <div class="hero__dust" aria-hidden="true" data-tone="dust"></div>
+    <div class="hero__sky">
+      <Photo photo={photos.saturn} frame="bleed" caption={false} reveal={false} parallax={false} eager sizes="(min-width: 768px) 50vw, 100vw" class="hero__saturn" />
+      <div class="hero__ring" data-spin="90" aria-hidden="true"><Art kind="endurance" /></div>
+    </div>
     <p class="hero__meta" data-reveal="fade" data-intro data-delay="0.5">
       <span><cite>Interstellar</cite> (2014), in the order it happens</span>
       <span>Cooper, on the Endurance</span>
@@ -38,7 +44,7 @@ const signals = [
 
   <!-- 01 EARTH: asymmetric pair on dust. -->
   <section id="earth" class="ch ch--earth" data-chapter="0" data-tone="dust" aria-labelledby="t-earth">
-    <figure class="ch__art ch__art--farm" data-reveal="clip"><Art kind="farm" /></figure>
+    <Photo photo={photos.dustStorm} class="ch__art ch__art--farm" sizes="(min-width: 768px) 45vw, 100vw" />
     <div class="ch__text">
       <p class="ch__meta"><span class="ch__n">{nn(earth.n)}</span>{earth.place}</p>
       <h2 id="t-earth" class="ch__title" style={width(earth.wdth)} data-split="lines">{earth.title}</h2>
@@ -77,14 +83,17 @@ const signals = [
       <p class="ch__lede">{nasa.body[3]}</p>
       <ClockStrip {...nasa.clockNote} />
     </div>
+    <Photo photo={photos.earthLimb} frame="bleed" class="nasa__limb" sizes="100vw" parallax={0.12} />
   </section>
 
   <!-- 03 WORMHOLE: full-bleed sky. -->
   <section id="wormhole" class="ch ch--wormhole" data-chapter="2" data-tone="void" aria-labelledby="t-wormhole">
     <div class="lens lens--door" data-lens="door" aria-hidden="true"><div class="lens__fallback"></div></div>
+    <div class="wh__ring" data-approach aria-hidden="true"><Art kind="endurance" /></div>
     <div class="ch__text">
       <p class="ch__meta"><span class="ch__n">{nn(wormhole.n)}</span>{wormhole.place}</p>
       <h2 id="t-wormhole" class="ch__title" style={width(wormhole.wdth)} data-split="lines">{wormhole.title}</h2>
+      <Photo photo={photos.saturnNight} class="wh__saturn" sizes="(min-width: 768px) 40vw, 100vw" />
       <p class="ch__lede">{wormhole.lede}</p>
       {wormhole.body.map((p) => <p>{p}</p>)}
       <ClockStrip {...wormhole.clockNote} />
@@ -120,23 +129,27 @@ const signals = [
       </div>
     </div>
     <div class="miller__after" data-tone="void">
-      <p class="ch__lede">{miller.lede}</p>
-      {miller.body.map((p) => <p>{p}</p>)}
-      <ClockStrip {...miller.clockNote} />
+      <Photo photo={photos.tarsMiller} class="miller__photo" sizes="(min-width: 768px) 35vw, 100vw" />
+      <div class="miller__copy">
+        <p class="ch__lede">{miller.lede}</p>
+        {miller.body.map((p) => <p>{p}</p>)}
+        <ClockStrip {...miller.clockNote} />
+      </div>
     </div>
   </section>
 
   <!-- 05 MANN: a statement, set large. -->
   <section id="mann" class="ch ch--mann" data-chapter="4" data-tone="void" aria-labelledby="t-mann">
-    <Art kind="ice" class="mann__ice" />
     <div class="ch__text ch__text--wide">
       <p class="ch__meta"><span class="ch__n">{nn(mann.n)}</span>{mann.place}</p>
       <h2 id="t-mann" class="ch__title" style={width(mann.wdth)} data-split="lines">{mann.title}</h2>
     </div>
+    <Photo photo={photos.antarctic} frame="bleed" class="mann__ice" sizes="100vw" parallax={0.12} />
     <p class="mann__statement" data-split="lines">{mann.lede} {mann.body[0]}</p>
     <div class="mann__cols">
       <p>{mann.body[1]}</p>
       <p>{mann.body[2]}</p>
+      <div class="mann__ranger" data-spin-scrub><Photo photo={photos.ranger} sizes="(min-width: 768px) 30vw, 100vw" parallax={false} /></div>
     </div>
     <ClockStrip {...mann.clockNote} />
   </section>
@@ -144,7 +157,7 @@ const signals = [
   <!-- 06 GARGANTUA: sticky black hole, narrative alongside. -->
   <section id="gargantua" class="ch ch--gargantua" data-chapter="5" data-tone="void" aria-labelledby="t-gargantua">
     <div class="garg__stick">
-      <div class="lens lens--hole" data-lens="hole" data-lens-scale="0.62" aria-hidden="true"><div class="lens__fallback"></div></div>
+      <div class="lens lens--hole" data-hole><Photo photo={photos.blackhole} frame="bleed" caption={false} reveal={false} parallax={false} sizes="(min-width: 768px) 46vw, 100vw" /></div>
       <Art kind="shelf" class="garg__shelf" />
     </div>
     <div class="garg__text">
@@ -163,10 +176,18 @@ const signals = [
   <section id="murph" class="ch ch--murph" data-chapter="6" data-tone="dust" aria-labelledby="t-murph">
     <p class="ch__meta"><span class="ch__n">{nn(murph.n)}</span>{murph.place}</p>
     <h2 id="t-murph" class="murph__title">{murph.title}</h2>
+    <Photo photo={photos.dustTown} frame="bleed" caption={false} class="murph__town" sizes="100vw" parallax={0.1} />
     <p class="murph__word" aria-hidden="true">Eureka</p>
     <Art kind="morse" class="murph__morse" />
     <div class="murph__cols">
-      <p class="ch__lede">{murph.lede}</p>
+      <div class="murph__lead">
+        <p class="ch__lede">{murph.lede}</p>
+        <div class="watch">
+          <Photo photo={photos.watch} frame="round" caption={false} parallax={false} sizes="12rem" />
+          <svg class="watch__hand" viewBox="0 0 100 100" aria-hidden="true"><line x1="50" y1="56" x2="50" y2="8" stroke="currentColor" stroke-width="1.6" data-morse-hand /><circle cx="50" cy="50" r="2.4" fill="currentColor" /></svg>
+          <p class="watch__note">The second hand, ticking EUREKA in Morse: short pause for a dot, long for a dash.</p>
+        </div>
+      </div>
       <div>
         {murph.body.map((p) => <p>{p}</p>)}
         <ClockStrip {...murph.clockNote} />
@@ -176,13 +197,13 @@ const signals = [
 
   <!-- 08 STATION: finale, the two final readings side by side. -->
   <section id="station" class="ch ch--station" data-chapter="7" data-tone="void" aria-labelledby="t-station">
-    <Art kind="station" class="station__art" />
     <div class="ch__text ch__text--wide">
       <p class="ch__meta"><span class="ch__n">{nn(station.n)}</span>{station.place}</p>
       <h2 id="t-station" class="ch__title" style={width(station.wdth)} data-split="lines">{station.title}</h2>
       <p class="ch__lede">{station.lede}</p>
       {station.body.map((p) => <p>{p}</p>)}
     </div>
+    <Photo photo={photos.colony} frame="bleed" class="station__colony" sizes="100vw" parallax={0.14} />
     <div class="final">
       <div class="final__cell final__cell--cooper">
         <p class="final__who">Cooper</p>

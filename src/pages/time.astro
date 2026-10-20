@@ -1,6 +1,8 @@
 ---
 import Base from '../layouts/Base.astro';
 import Cta from '../components/Cta.astro';
+import Photo from '../components/Photo.astro';
+import { photos } from '../data/photos';
 import { ledger } from '../data/site';
 ---
 <Base
@@ -38,6 +40,7 @@ import { ledger } from '../data/site';
 
   <section class="why" data-tone="void" aria-labelledby="why-title">
     <h2 id="why-title" class="why__title" data-split="lines">Why gravity slows a clock</h2>
+    <Photo photo={photos.gargantuaFilm} class="why__photo" sizes="(min-width: 768px) 25vw, 100vw" />
     <div class="why__grid">
       <p>A clock deep in a gravity well ticks slower than a clock far from it. Neither owner notices anything strange. The difference only appears when the two clocks are compared.</p>
       <p>Gargantua is huge and spins close to the limit physics allows, which lets a planet orbit very near it without falling in. Miller’s world sits in that orbit, about as deep in the well as anything can stay.</p>

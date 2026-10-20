@@ -5,7 +5,7 @@
 import { Renderer, Camera, Transform, Program, Mesh, Vec2, Triangle } from 'ogl';
 import { gsap } from 'gsap';
 import { scrollState } from '../scroll';
-import { prefersReducedMotion } from '../env';
+import { isMobile, prefersReducedMotion } from '../env';
 
 let renderer: Renderer | null = null;
 let camera: Camera;
@@ -14,7 +14,7 @@ let bg: { scene: Transform; program: Program } | null = null;
 const mouse = { x: 0.5, y: 0.5, tx: 0.5, ty: 0.5 };
 
 export function glSupported() {
-  if (prefersReducedMotion()) return false;
+  if (prefersReducedMotion() || isMobile()) return false; // phones: CSS sky, spare the battery and the frame rate
   if ((navigator as Navigator & { connection?: { saveData?: boolean } }).connection?.saveData) return false;
   try { return !!document.createElement('canvas').getContext('webgl'); } catch { return false; }
 }

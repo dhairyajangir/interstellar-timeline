@@ -4,7 +4,7 @@ An unofficial, scroll-driven timeline of *Interstellar* (2014). Two clocks run i
 whole page: Cooper's ship time on the left, Earth time (and Murph's age) on the right. Gravity decides
 how fast each one runs.
 
-All art is drawn in code (CSS, SVG, one WebGL shader). No film stills, logos or quoted dialogue.
+Photographs are public-domain NASA, Library of Congress and USDA images, toned by `scripts/grade.mjs`. A few film stills supplied by the owner (© Warner Bros. / Paramount) are marked `film: true` in `src/data/photos.ts`. Line art, the Endurance ring and the sky shader are drawn in code.
 
 ## Run
 

@@ -138,7 +138,6 @@ html.is-scrolled .frame { background: linear-gradient(90deg, var(--g-l, var(--vo
 .rail--cooper .rail__ticks { left: 0; }
 .rail--earth .rail__ticks { right: 0; background-position: right 0, right 0; }
 .rail__read { display: grid; gap: 0.3em; }
-@media (min-width: 768px) { .rail__who, .rail__read { background: var(--ground); box-shadow: 0 0 0 0.4rem var(--ground); } }
 .rail__read [data-clock] { white-space: pre-line; }
 .rail__age { font-family: var(--f-body); font-weight: 700; font-size: var(--t-s); word-spacing: normal; }
 html.any-year .rail--earth .rail__sub { opacity: 1; }
@@ -162,7 +161,7 @@ html:not(.js) #loader, html.no-loader #loader, #loader[hidden] { display: none; 
 }
 
 /* The clocks ride above the curtain while travelling. */
-@media (min-width: 768px) { html.in-transit .rails [data-ink] { color: var(--star); --ground: var(--void); } }
+@media (min-width: 768px) { html.in-transit .rails [data-ink] { color: var(--star); } }
 
 /* Curtain: the wormhole. */
 .curtain__panel { background: radial-gradient(circle at 50% 50%, rgb(201 180 143 / 0.1), transparent 40%), var(--void); }
@@ -224,7 +223,7 @@ html:not(.js) #loader, html.no-loader #loader, #loader[hidden] { display: none; 
 .ch--earth .ch__text { grid-column: 8 / span 5; }
 
 /* 02 NASA, ends by fading into space */
-.ch--nasa { background: linear-gradient(to bottom, var(--dust) calc(100% - 45svh), var(--void)); padding-bottom: calc(var(--u) * 30); row-gap: calc(var(--u) * 6); }
+.ch--nasa { background: linear-gradient(to bottom, var(--dust) calc(100% - 45svh), var(--void)); padding-bottom: 0; row-gap: calc(var(--u) * 6); }
 .nasa__cols { grid-column: 1 / -1; display: grid; grid-template-columns: subgrid; }
 .nasa__story { grid-column: 1 / span 5; }
 .nasa__story p + p { margin-top: 1em; }
@@ -293,11 +292,9 @@ html:not(.motion) .miller__wave { height: 28%; opacity: 0.4; }
   display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--gutter);
   padding: calc(var(--u) * 14) calc(var(--rail) + var(--gutter)) calc(var(--u) * 16);
 }
-.miller__after > * { grid-column: 4 / span 7; }
 
 /* 05 Mann */
 .ch--mann { row-gap: calc(var(--u) * 4); padding-bottom: calc(var(--u) * 6); }
-.mann__ice { position: absolute; right: calc(var(--rail) + var(--gutter)); top: calc(var(--u) * 10); width: min(42vw, 36rem); opacity: 0.3; }
 .mann__statement { grid-column: 1 / span 10; font-size: var(--t-l); font-weight: 500; line-height: 1.18; letter-spacing: -0.02em; font-variation-settings: 'wdth' 92; position: relative; }
 .mann__cols { grid-column: 3 / span 9; display: grid; grid-template-columns: 1fr 1fr; gap: var(--gutter); }
 .ch--mann .strip { grid-column: 3 / span 7; }
@@ -305,11 +302,6 @@ html:not(.motion) .miller__wave { height: 28%; opacity: 0.4; }
 /* 06 Gargantua: sticky black hole, then the tesseract */
 .ch--gargantua { align-items: start; padding-top: calc(var(--u) * 4); }
 .garg__stick { grid-column: 1 / span 6; position: sticky; top: 0; height: 100svh; }
-.lens--hole { left: 50%; top: 50%; width: min(34vw, 30rem); translate: -50% -50%; }
-.lens--hole .lens__fallback {
-  inset: 19%;
-  background: radial-gradient(circle, #000 0 64%, rgb(236 231 220 / 0.85) 66%, rgb(201 180 143 / 0.25) 72%, transparent 80%);
-}
 .garg__shelf { position: absolute; left: 50%; top: 50%; width: min(42vw, 34rem); translate: -50% -50%; opacity: 0; transition: opacity 1.2s cubic-bezier(0.16, 1, 0.3, 1); color: var(--dust); }
 html.any-year .garg__shelf { opacity: 0.85; }
 .garg__text { grid-column: 8 / span 5; padding-block: 4svh 10svh; }
@@ -329,13 +321,11 @@ html.any-year .garg__shelf { opacity: 0.85; }
 }
 .murph__morse { grid-column: 1 / -1; height: calc(var(--u) * 2.2); width: auto; max-width: 100%; margin: calc(var(--u) * 2) 0 calc(var(--u) * 5); }
 .murph__cols { grid-column: 1 / -1; display: grid; grid-template-columns: subgrid; }
-.murph__cols > .ch__lede { grid-column: 1 / span 5; }
 .murph__cols > div { grid-column: 7 / span 6; }
 .murph__cols p + p { margin-top: 1em; }
 
 /* 08 Station */
 .ch--station { row-gap: calc(var(--u) * 6); padding-bottom: calc(var(--u) * 12); }
-.station__art { position: absolute; right: calc(var(--rail) + var(--gutter)); top: calc(var(--u) * 12); width: min(40vw, 34rem); opacity: 0.4; }
 .ch--station .ch__text { position: relative; }
 .final { grid-column: 1 / -1; display: grid; grid-template-columns: 1fr 1fr; }
 .final__cell { padding: calc(var(--u) * 3.5) calc(var(--u) * 3.5) calc(var(--u) * 4); display: grid; gap: calc(var(--u) * 1); align-content: start; }
@@ -378,7 +368,9 @@ html.any-year .garg__shelf { opacity: 0.85; }
 .try__note { max-width: 34ch; }
 .why { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--gutter); row-gap: calc(var(--u) * 5); padding: calc(var(--u) * 16) calc(var(--rail) + var(--gutter)); }
 .why__title { grid-column: 1 / span 7; font-size: var(--t-xl); font-weight: 780; font-variation-settings: 'wdth' 110; line-height: 0.92; letter-spacing: -0.04em; }
-.why__grid { grid-column: 3 / span 10; display: grid; grid-template-columns: 1fr 1fr; gap: calc(var(--u) * 4) var(--gutter); }
+.why__photo { grid-column: 10 / span 3; grid-row: 1 / span 2; align-self: start; }
+.why__photo .photo__frame { aspect-ratio: 411 / 745; }
+.why__grid { grid-column: 1 / span 8; display: grid; grid-template-columns: 1fr 1fr; gap: calc(var(--u) * 4) var(--gutter); }
 .why__grid p { max-width: 46ch; }
 .ledger { padding: calc(var(--u) * 14) calc(var(--rail) + var(--gutter)); }
 .ledger__title { font-size: var(--t-xl); font-weight: 780; font-variation-settings: 'wdth' 76; line-height: 0.92; letter-spacing: -0.04em; margin-bottom: calc(var(--u) * 5); }
@@ -397,12 +389,13 @@ html.any-year .garg__shelf { opacity: 0.85; }
 .lost { position: relative; min-height: 100svh; display: grid; align-content: center; justify-items: start; gap: calc(var(--u) * 3); padding: calc(var(--u) * 16) calc(var(--rail) + var(--gutter)); overflow: clip; }
 .lost__shelf { position: absolute; right: calc(var(--rail) + var(--gutter)); top: 50%; width: min(50vw, 42rem); color: var(--dust); opacity: 0.22; translate: 18% -50%; }
 .lost__title { position: relative; font-size: var(--t-mega); font-weight: 800; font-variation-settings: 'wdth' 66; line-height: 0.84; letter-spacing: -0.045em; max-width: 8ch; margin-left: -0.05em; }
+.lost .btn { background: var(--void); }
 .lost__text { position: relative; font-size: var(--t-m); max-width: 34ch; line-height: 1.3; }
 
 /* ---------- Phones: a clock bar at the bottom, stacked worlds ---------- */
 @media (max-width: 767px) {
   body { padding-bottom: calc(3.6rem + env(safe-area-inset-bottom)); }
-  .rails { top: auto; height: auto; display: grid; grid-template-columns: 1fr 1fr; }
+  .rails { top: auto; height: calc(3.6rem + env(safe-area-inset-bottom)); display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
   .rail { position: static; width: auto; display: grid; grid-template-rows: none; gap: 0.15em; padding: 0.55rem var(--gutter) calc(0.55rem + env(safe-area-inset-bottom)); }
   .rail__ruler, .rail__sub { display: none; }
   .rail--cooper { background: var(--void); color: var(--star); box-shadow: inset 0 1px 0 rgb(236 231 220 / 0.2); }
@@ -412,7 +405,9 @@ html.any-year .garg__shelf { opacity: 0.85; }
   .rail__who { display: block; }
   .rail__name { font-size: var(--t-xs); }
   .rail__read { gap: 0; font-size: 0.7rem; }
-  .rail__read [data-clock] { white-space: normal; }
+  .rail__read [data-clock] { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .rail { overflow: hidden; align-content: center; }
+  .rail--earth .rail__who { display: none; }
   .rail__age { font-size: var(--t-xs); }
 
   .frame { padding-block: calc(var(--u) * 2.5); }
@@ -428,7 +423,7 @@ html.any-year .garg__shelf { opacity: 0.85; }
 
   .ch { padding-block: calc(var(--u) * 14); row-gap: calc(var(--u) * 4); }
   .ch > *, .ch__text, .ch__text--wide, .ch--earth .ch__text, .ch__art--farm, .nasa__story, .nasa__signals, .plans__a, .plans__b, .nasa__leave,
-  .mann__statement, .mann__cols, .ch--mann .strip, .murph__cols > .ch__lede, .murph__cols > div, .station__more, .final { grid-column: 1 / -1; }
+  .mann__statement, .mann__cols, .ch--mann .strip, .murph__lead, .murph__cols > div, .station__more, .final { grid-column: 1 / -1; }
   .ch { grid-template-columns: minmax(0, 1fr); }
   .nasa__cols, .plans, .murph__cols { grid-template-columns: minmax(0, 1fr); row-gap: calc(var(--u) * 4); }
   .signals__row { grid-template-columns: 1fr; gap: 0.3em; }
@@ -451,18 +446,14 @@ html.any-year .garg__shelf { opacity: 0.85; }
   .miller__wave { height: 60%; width: 100%; }
   .miller__half--dust .miller__wave { left: 0; }
   .miller__after { grid-template-columns: minmax(0, 1fr); }
-  .miller__after > * { grid-column: 1; }
 
-  .mann__ice { position: relative; right: auto; top: auto; width: 100%; grid-row: 1; }
   .mann__cols { grid-template-columns: 1fr; }
 
   .garg__stick { position: relative; height: 60svh; grid-column: 1; }
-  .lens--hole { width: 80vw; }
   .garg__shelf { width: 86vw; }
   .garg__text { grid-column: 1; padding-block: 0; }
   .garg__text > p:not([class]), .garg__tess { margin-top: 1.2em; }
 
-  .station__art { position: relative; right: auto; top: auto; width: 100%; grid-row: 1; }
   .final { grid-template-columns: 1fr; }
 
   .foot__about, .foot__nav { grid-column: 1 / -1; }
@@ -470,7 +461,8 @@ html.any-year .garg__shelf { opacity: 0.85; }
   .try { grid-template-columns: 1fr; }
   .try__half--void { padding-left: var(--gutter); }
   .try__half--dust { padding-right: var(--gutter); }
-  .why__title, .why__grid { grid-column: 1 / -1; }
+  .why__title, .why__grid, .why__photo { grid-column: 1 / -1; grid-row: auto; }
+  .why__photo { max-width: 16rem; }
   .tp-hero > *, .tp-rate { grid-column: 1 / -1 !important; grid-row: auto; }
   .tp-hero { grid-template-columns: minmax(0, 1fr); row-gap: calc(var(--u) * 4); }
   .tp-rate { grid-template-columns: 1fr 1fr; }
@@ -488,4 +480,83 @@ html.any-year .garg__shelf { opacity: 0.85; }
 
   /* Phones skip the countdown: the hero is the first frame. */
   #loader { display: none; }
+}
+
+/* ---------- Photographs: graded into the two worlds (scripts/grade.mjs) ---------- */
+.photo { margin: 0; display: grid; gap: calc(var(--u) * 1.2); align-content: start; }
+.photo__frame { position: relative; overflow: clip; aspect-ratio: var(--ar, 3 / 2); background: var(--ph-bg, var(--void)); }
+.photo__inner { position: absolute; inset: -10% 0; }
+.photo__inner img { width: 100%; height: 100%; object-fit: cover; }
+.photo__credit { font-family: var(--f-mono); font-size: var(--t-xs); line-height: 1.45; color: var(--c-muted); max-width: 52ch; }
+.photo--print .photo__frame { box-shadow: 0 0 0 1px var(--c-line); }
+[data-tone='dust'] .photo { --ph-bg: var(--soot); }
+/* Bleeds melt into the ground above and below them instead of ending in a hard edge. */
+.photo--bleed .photo__frame::before, .photo--bleed .photo__frame::after {
+  content: ''; position: absolute; left: 0; right: 0; height: 32%; z-index: 1; pointer-events: none;
+}
+.photo--bleed .photo__frame::before { top: 0; background: linear-gradient(var(--bleed, var(--void)), transparent); }
+.photo--bleed .photo__frame::after { bottom: 0; background: linear-gradient(transparent, var(--bleed, var(--void))); }
+.photo--bleed .photo__credit { padding-inline: calc(var(--rail) + var(--gutter)); max-width: none; }
+.photo--round .photo__frame { aspect-ratio: 1; border-radius: 50%; }
+.photo--round .photo__inner { inset: 0; }
+
+/* Hero: Saturn and the turning Endurance sit in the void half. */
+.hero__sky { grid-column: 1; grid-row: 1 / -1; position: relative; z-index: -1; pointer-events: none; margin: calc(var(--pad-t) * -1) 0 calc(var(--pad-b) * -1) calc(var(--pad-x) * -1); overflow: clip; }
+.hero__saturn { position: absolute; left: 0; right: 0; top: 30%; }
+.hero__saturn .photo__frame { aspect-ratio: 1920 / 746; }
+.hero__ring { position: absolute; width: clamp(6rem, 10vw, 10rem); right: 9%; top: 23%; color: var(--star); opacity: 0.85; }
+
+/* Earth: Rothstein's dust storm as an archival print. */
+.ch__art--farm .photo__frame { aspect-ratio: 1460 / 1500; }
+
+/* NASA: leaving Earth at the bottom of the chapter, where the dust turns to space. */
+.nasa__limb { grid-column: 1 / -1; margin-inline: calc((var(--rail) + var(--gutter)) * -1); margin-top: calc(var(--u) * 4); }
+.nasa__limb .photo__frame { aspect-ratio: 21 / 8; }
+
+/* Wormhole: Saturn as a print under the title; the Endurance approaching the sphere. */
+.wh__saturn { margin-block: calc(var(--u) * 1) calc(var(--u) * 4); }
+.wh__ring { position: absolute; width: clamp(4rem, 6vw, 6.5rem); left: 46%; top: 24%; color: var(--star); pointer-events: none; }
+
+/* Miller: TARS in the shallows, next to the aftermath. */
+.miller__photo { grid-column: 1 / span 5; position: sticky; top: 14svh; align-self: start; }
+.miller__copy { grid-column: 7 / span 6; }
+
+/* Mann: the frozen cloud, full bleed, then the docking still that turns as you read. */
+.mann__ice { grid-column: 1 / -1; margin-inline: calc((var(--rail) + var(--gutter)) * -1); }
+.mann__ice .photo__frame { aspect-ratio: 21 / 9; }
+.mann__cols { grid-column: 1 / -1; grid-template-columns: 1fr 1fr 1.15fr; align-items: start; }
+.mann__ranger .photo__frame { aspect-ratio: 597 / 335; }
+
+/* Gargantua: Goddard's simulation is the black hole. */
+.lens--hole { left: 50%; top: 50%; width: min(46vw, 42rem); aspect-ratio: auto; translate: -50% -50%; }
+.lens--hole .photo__frame { aspect-ratio: 1024 / 560; }
+.lens--hole .photo { --bleed: var(--void); }
+
+/* Murph: the Dust Bowl town behind the word; the watch beside the answer. */
+.ch--murph { overflow: clip; }
+.ch--murph > :not(.murph__town) { position: relative; z-index: 1; }
+.murph__town { position: absolute; left: 0; right: 0; top: 0; z-index: 0; opacity: 0.42; --bleed: var(--dust); }
+.murph__town .photo__frame { aspect-ratio: auto; height: 85svh; }
+.murph__cols > .murph__lead { grid-column: 1 / span 5; }
+.watch { position: relative; width: 12rem; margin-top: calc(var(--u) * 4); display: grid; gap: calc(var(--u) * 1.5); }
+.watch__hand { position: absolute; left: 0; top: 0; width: 12rem; height: 12rem; color: var(--star); }
+.watch__note { font-family: var(--f-mono); font-size: var(--t-xs); color: var(--c-muted); }
+
+/* Cooper Station: the inside of the cylinder, before the final readings. */
+.station__colony { grid-column: 1 / -1; margin-inline: calc((var(--rail) + var(--gutter)) * -1); }
+.station__colony .photo__frame { aspect-ratio: 21 / 9; }
+
+@media (max-width: 767px) {
+  .hero__sky { grid-row: 1 / 3; margin: calc(var(--u) * -14) calc(var(--pad-x) * -1) 0; }
+  .hero__saturn { top: 34%; }
+  .hero__ring { top: auto; bottom: 30%; right: 6%; width: 4.75rem; }
+  .hero { grid-template-rows: auto minmax(30svh, 1fr) auto auto; }
+  .hero__meta { max-width: 75%; }
+  .nasa__limb .photo__frame, .mann__ice .photo__frame, .station__colony .photo__frame { aspect-ratio: 4 / 3; }
+  .wh__ring { display: none; }
+  .miller__photo { position: static; grid-column: 1; }
+  .miller__copy { grid-column: 1; }
+  .mann__cols { grid-template-columns: 1fr; }
+  .lens--hole { width: 92vw; }
+  .murph__town .photo__frame { height: 60svh; }
 }
