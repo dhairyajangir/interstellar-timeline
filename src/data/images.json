@@ -87,6 +87,54 @@
       960
     ]
   },
+  "wormhole-sphere": {
+    "w": 1920,
+    "h": 1080,
+    "widths": [
+      1920,
+      960
+    ]
+  },
+  "wormhole-tunnel": {
+    "w": 1920,
+    "h": 1080,
+    "widths": [
+      1920,
+      960
+    ]
+  },
+  "hubble-lens": {
+    "w": 1000,
+    "h": 800,
+    "widths": [
+      900,
+      600
+    ]
+  },
+  "wormhole-lensed": {
+    "w": 3840,
+    "h": 2160,
+    "widths": [
+      1920,
+      960
+    ]
+  },
+  "wormhole-throat": {
+    "w": 1750,
+    "h": 875,
+    "widths": [
+      1750,
+      960
+    ]
+  },
+  "wormhole-farside": {
+    "w": 2048,
+    "h": 800,
+    "widths": [
+      1920,
+      960
+    ]
+  },
   "ranger": {
     "w": 597,
     "h": 335,

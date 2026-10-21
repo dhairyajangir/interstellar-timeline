@@ -70,18 +70,7 @@ function imageMotion() {
       whileVisible(el, gsap.to(el, { rotate: 360, duration: parseFloat(el.dataset.spin || '90'), ease: 'none', repeat: -1 }));
     });
 
-    // Approaching Saturn, the ring drifts into the sphere and shrinks away.
-    const ring = document.querySelector<HTMLElement>('[data-approach]');
-    const door = document.querySelector<HTMLElement>('[data-lens="door"]');
-    if (ring && door) {
-      const to = () => {
-        const a = ring.getBoundingClientRect(), b = door.getBoundingClientRect();
-        return { x: b.left + b.width / 2 - (a.left + a.width / 2), y: b.top + b.height / 2 - (a.top + a.height / 2) };
-      };
-      gsap.timeline({ scrollTrigger: { trigger: ring.parentElement, start: 'top 60%', end: 'bottom 40%', scrub: 1, invalidateOnRefresh: true } })
-        .fromTo(ring, { x: 0, y: 0, scale: 1, rotate: 0 }, { x: () => to().x, y: () => to().y, scale: 0.15, rotate: 140, ease: 'power2.in' })
-        .to(ring, { autoAlpha: 0, duration: 0.15 }, 0.85);
-    }
+    wormholePassage();
 
     // Docking: the Ranger turns to match the tumbling ship while you read about it.
     document.querySelectorAll<HTMLElement>('[data-spin-scrub]').forEach((el) => {
@@ -106,6 +95,59 @@ function imageMotion() {
   });
 }
 
+// A stage's caption names the frame on screen and credits it, read from the scroll position
+// (the scrubbed tweens lag behind it). handovers: progress where each next layer takes over.
+function captionFor(stage: HTMLElement, layers: HTMLElement[], handovers: number[]) {
+  const label = stage.querySelector<HTMLElement>('[data-fall-label]');
+  const credit = stage.querySelector<HTMLElement>('[data-fall-credit]');
+  return (progress: number) => {
+    const top = layers[handovers.filter((h) => progress >= h).length];
+    if (label && label.textContent !== top.dataset.caption) label.textContent = top.dataset.caption!;
+    if (credit && credit.textContent !== top.dataset.credit) credit.textContent = top.dataset.credit!;
+  };
+}
+
+// Through the wormhole. The sphere is real Hubble light bent around a ball; the Endurance flies
+// into it, the sphere swells until you are inside, the deep field streaks past, the Milky Way
+// bends around the throat, and the far galaxy opens. Same push-through grammar as the fall.
+function wormholePassage() {
+  const stage = document.querySelector<HTMLElement>('[data-passage]');
+  if (!stage) return;
+  const L = (k: string) => stage.querySelector<HTMLElement>(`[data-fall-layer="${k}"]`)!;
+  const [sphere, lensed, tunnel, throat, far] = ['sphere', 'lensed', 'tunnel', 'throat', 'far'].map(L);
+  const ring = stage.querySelector<HTMLElement>('[data-approach]');
+  const caption = captionFor(stage, [sphere, lensed, tunnel, throat, far], [0.36, 0.5, 0.64, 0.78]);
+  const tl = gsap.timeline({
+    defaults: { ease: 'none' },
+    scrollTrigger: { trigger: stage.closest('section'), start: 'top top', end: 'bottom bottom', scrub: 0.6, invalidateOnRefresh: true, onUpdate: (s) => caption(s.progress) },
+  });
+  // 0 → 0.36: the sphere hangs there; the ring falls into its centre and is gone.
+  tl.fromTo(sphere, { scale: 1 }, { scale: 1.3, duration: 0.3 }, 0);
+  if (ring) {
+    const to = () => {
+      const a = ring.getBoundingClientRect(), b = stage.getBoundingClientRect();
+      return { x: b.left + b.width / 2 - (a.left + a.width / 2), y: b.top + b.height / 2 - (a.top + a.height / 2) };
+    };
+    tl.fromTo(ring, { x: 0, y: 0, scale: 1, rotate: 0 }, { x: () => to().x, y: () => to().y, scale: 0.12, rotate: 160, ease: 'power2.in', duration: 0.26 }, 0.02)
+      .to(ring, { autoAlpha: 0, duration: 0.03 }, 0.26);
+  }
+  // 0.3 → 0.5: into the sphere; the lensed sky swims up from behind it.
+  tl.to(sphere, { scale: 4, autoAlpha: 0, duration: 0.08, ease: 'power2.in' }, 0.3)
+    .fromTo(lensed, { autoAlpha: 0, scale: 1.5, rotate: 8 }, { autoAlpha: 1, scale: 1, rotate: 0, duration: 0.08 }, 0.33)
+    .to(lensed, { scale: 1.3, duration: 0.1 }, 0.41)
+    .to(lensed, { autoAlpha: 0, duration: 0.03 }, 0.5)
+    // 0.5 → 0.64: the throat, everything streaming past.
+    .fromTo(tunnel, { autoAlpha: 0, scale: 1.6 }, { autoAlpha: 1, scale: 1, duration: 0.05 }, 0.5)
+    .to(tunnel, { scale: 1.45, duration: 0.09 }, 0.55)
+    .to(tunnel, { autoAlpha: 0, duration: 0.03 }, 0.64)
+    // 0.64 → 0.78: the Milky Way bent around the throat.
+    .fromTo(throat, { autoAlpha: 0, scale: 1.3, yPercent: -8 }, { autoAlpha: 1, scale: 1, yPercent: 0, duration: 0.06 }, 0.64)
+    .to(throat, { scale: 1.6, autoAlpha: 0, duration: 0.06 }, 0.75)
+    // 0.78 → 1: out the other side, into a new sky.
+    .fromTo(far, { autoAlpha: 0, scale: 1.25, clipPath: 'inset(40% 40% 40% 40%)' }, { autoAlpha: 1, scale: 1, clipPath: 'inset(0% 0% 0% 0%)', duration: 0.09 }, 0.78)
+    .to(far, { scale: 1.08, duration: 0.13 }, 0.87);
+}
+
 // Falling into Gargantua. One scrubbed timeline over the chapter: each real frame takes over from
 // the last by pushing through it (the old one swells and burns out, the new one settles in from
 // stretched), ending in the tesseract, whose nested copies then zoom forever at rest.
@@ -115,22 +157,14 @@ function fallSequence() {
   if (!stage) return;
   const L = (k: string) => stage.querySelector<HTMLElement>(`[data-fall-layer="${k}"]`)!;
   const [approach, disk, horizon, ring, tess] = ['approach', 'disk', 'horizon', 'ring', 'tess'].map(L);
-  const label = stage.querySelector<HTMLElement>('[data-fall-label]');
-  const credit = stage.querySelector<HTMLElement>('[data-fall-credit]');
-  const layers = [approach, disk, horizon, ring, tess];
-  const HANDOVERS = [0.13, 0.24, 0.33, 0.39]; // progress where each frame takes over, matching the timeline below
+  // Handovers match the timeline below.
+  const caption = captionFor(stage, [approach, disk, horizon, ring, tess], [0.13, 0.24, 0.33, 0.39]);
 
   const tl = gsap.timeline({
     defaults: { ease: 'none' },
     scrollTrigger: {
       trigger: stage.closest('section'), start: 'top top', end: 'bottom bottom', scrub: 0.6, invalidateOnRefresh: true,
-      onUpdate: (s) => {
-        // The caption names the frame on screen and credits it (read from the scroll, not the lagging scrub).
-        const top = layers[HANDOVERS.filter((h) => s.progress >= h).length];
-        if (label && label.textContent !== top.dataset.caption) label.textContent = top.dataset.caption!;
-        if (credit && credit.textContent !== top.dataset.credit) credit.textContent = top.dataset.credit!;
-        stage.classList.toggle('is-inside', s.progress > 0.4);
-      },
+      onUpdate: (s) => { caption(s.progress); stage.classList.toggle('is-inside', s.progress > 0.4); },
     },
   });
   // 0 → 0.14: the approach, Gargantua growing in the window.

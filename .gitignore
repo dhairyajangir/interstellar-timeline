@@ -33,3 +33,6 @@ pnpm-debug.log*
 .shots/
 
 .vercel
+
+# Rendered by scripts/wormhole.mjs (npm run grade)
+src/assets/raw/gen/

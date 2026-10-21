@@ -16,6 +16,14 @@ const img = (p: PhotoData, sizes: string) => {
     sizes, width: s.w, height: s.h, loading: 'lazy' as const, decoding: 'async' as const,
   };
 };
+// Through the wormhole, in order. Keys drive src/motion/setup.ts (wormholePassage).
+const passage = [
+  { key: 'sphere', label: 'A sphere, not a hole', photo: photos.wormholeSphere },
+  { key: 'lensed', label: 'Falling in', photo: photos.wormholeLensed },
+  { key: 'tunnel', label: 'The throat', photo: photos.wormholeTunnel },
+  { key: 'throat', label: 'The Milky Way bent around it', photo: photos.wormholeThroat },
+  { key: 'far', label: 'Another galaxy', photo: photos.wormholeFar },
+];
 // Falling into Gargantua, in order. Keys drive src/motion/setup.ts (fallSequence).
 const fall = [
   { key: 'approach', label: 'Approach', photo: photos.blackhole },
@@ -106,14 +114,24 @@ const signals = [
 
   <!-- 03 WORMHOLE: full-bleed sky. -->
   <section id="wormhole" class="ch ch--wormhole" data-chapter="2" data-tone="void" aria-labelledby="t-wormhole">
-    <div class="lens lens--door" data-lens="door" aria-hidden="true"><div class="lens__fallback"></div></div>
-    <div class="wh__ring" data-approach aria-hidden="true"><Art kind="endurance" /></div>
-    <div class="ch__text">
+    <!-- The passage: a sphere made from real Hubble light, then through it and out. -->
+    <div class="fall fall--left" data-passage>
+      {passage.map((f) => (
+        <figure class={`fall__layer fall__layer--${f.key}`} data-fall-layer={f.key} data-caption={f.label} data-credit={f.photo.credit}>
+          <img {...img(f.photo, '100vw')} alt={f.photo.alt} />
+          {f.key === 'sphere' && <div class="wh__ring" data-approach aria-hidden="true"><Art kind="endurance" /></div>}
+        </figure>
+      ))}
+      <p class="fall__caption fall__caption--right" aria-hidden="true"><span data-fall-label>{passage[0].label}</span><span data-fall-credit>{passage[0].photo.credit}</span></p>
+    </div>
+    <div class="ch__text wh__text">
       <p class="ch__meta"><span class="ch__n">{nn(wormhole.n)}</span>{wormhole.place}</p>
       <h2 id="t-wormhole" class="ch__title" style={width(wormhole.wdth)} data-split="lines">{wormhole.title}</h2>
       <Photo photo={photos.saturnNight} class="wh__saturn" sizes="(min-width: 768px) 40vw, 100vw" />
       <p class="ch__lede">{wormhole.lede}</p>
-      {wormhole.body.map((p) => <p>{p}</p>)}
+      <p>{wormhole.body[0]}</p>
+      <Photo photo={photos.hubbleLens} class="wh__lens" sizes="(min-width: 768px) 30vw, 100vw" parallax={false} />
+      <p>{wormhole.body[1]}</p>
       <ClockStrip {...wormhole.clockNote} />
     </div>
   </section>

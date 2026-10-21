@@ -11,7 +11,6 @@
 html:not(.gl-on) body {
   background: var(--void) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='260' height='260'%3E%3Cg fill='%23ece7dc'%3E%3Ccircle cx='23' cy='41' r='.8'/%3E%3Ccircle cx='131' cy='17' r='.6'/%3E%3Ccircle cx='211' cy='77' r='1'/%3E%3Ccircle cx='71' cy='139' r='.6'/%3E%3Ccircle cx='181' cy='171' r='.8'/%3E%3Ccircle cx='37' cy='223' r='.5'/%3E%3Ccircle cx='117' cy='97' r='.4'/%3E%3Ccircle cx='241' cy='233' r='.6'/%3E%3Ccircle cx='151' cy='247' r='.4'/%3E%3C/g%3E%3C/svg%3E");
 }
-html.gl-on .lens__fallback { display: none; }
 
 /* ---------- Shared type ---------- */
 .mono, .ch__meta, .rail, .strip dt, .loader__count, .loader__corners, .miller__label, .miller__big, .miller__age, .try__label, .try__big, .try__age {
@@ -241,15 +240,14 @@ html:not(.js) #loader, html.no-loader #loader, #loader[hidden] { display: none; 
 .nasa__leave { grid-column: 5 / span 7; padding-top: 0; }
 
 /* 03 Wormhole */
-.ch--wormhole { min-height: 130svh; align-content: center; }
-.ch--wormhole .ch__text { grid-column: 1 / span 5; position: relative; }
-.lens { position: absolute; aspect-ratio: 1; pointer-events: none; }
-.lens--door { right: calc(var(--rail) + var(--gutter) * 2); top: 50%; width: min(36vw, 36rem); translate: 0 -50%; }
-.lens__fallback { position: absolute; inset: 0; border-radius: 50%; }
-.lens--door .lens__fallback {
-  background: radial-gradient(circle at 38% 34%, rgb(201 180 143 / 0.42), rgb(201 180 143 / 0.08) 45%, rgb(6 7 8 / 0.9) 72%);
-  box-shadow: 0 0 0 1px rgb(236 231 220 / 0.45), 0 0 90px rgb(236 231 220 / 0.08);
-}
+/* 03 Wormhole: a passage like the fall, text on the left. */
+.ch--wormhole { align-items: start; padding-top: 0; }
+.wh__text { grid-column: 1 / span 5; grid-row: 1; position: relative; z-index: 1; padding-block: 18svh 30svh; }
+.wh__text > p:not([class]) { margin-top: 26svh; max-width: 40ch; }
+.wh__text .ch__lede { margin-top: 0; }
+.wh__lens { margin-top: calc(var(--u) * 4); max-width: 26rem; }
+.fall--left::after { background: linear-gradient(270deg, transparent 30%, rgb(6 7 8 / 0.55) 52%, rgb(6 7 8 / 0.9) 70%); }
+.fall .fall__caption--right { left: auto; right: calc(var(--rail) + var(--gutter)); margin: 0 -0.8rem 0 0; text-align: right; justify-items: end; }
 
 /* 04 Miller: the signature stage */
 .ch--miller { display: block; padding: 0; }
@@ -305,7 +303,7 @@ html:not(.motion) .miller__wave { height: 28%; opacity: 0.4; }
 .fall { grid-column: 1 / -1; grid-row: 1; position: sticky; top: 0; height: 100svh; margin-inline: calc((var(--rail) + var(--gutter)) * -1); overflow: clip; background: var(--void); }
 .fall__layer { position: absolute; inset: 0; margin: 0; opacity: 0; }
 .fall__layer img { width: 100%; height: 100%; object-fit: cover; }
-.fall__layer--approach { opacity: 1; }
+.fall__layer--approach, .fall__layer--sphere { opacity: 1; }
 .fall__layer--approach img { object-fit: contain; padding: 12svh 6vw; }
 /* The tesseract: the set photo nested in itself, so the corridor never ends. */
 .tess { position: absolute; inset: 0; }
@@ -325,8 +323,8 @@ html:not(.motion) .miller__wave { height: 28%; opacity: 0.4; }
 html:not(.motion) .fall { position: relative; height: auto; display: grid; }
 html:not(.motion) .fall__layer { position: relative; opacity: 1; aspect-ratio: 16 / 9; }
 html:not(.motion) .fall::after, html:not(.motion) .fall__caption { display: none; }
-html:not(.motion) .garg__text { grid-row: 2; }
-html:not(.motion) .garg__text > p:not([class]), html:not(.motion) .garg__tess { margin-top: 1em; }
+html:not(.motion) .garg__text, html:not(.motion) .wh__text { grid-row: 2; }
+html:not(.motion) .garg__text > p:not([class]), html:not(.motion) .garg__tess, html:not(.motion) .wh__text > p:not([class]) { margin-top: 1em; }
 
 /* 07 Murph: the answer */
 .ch--murph { row-gap: calc(var(--u) * 3); }
@@ -451,8 +449,6 @@ html:not(.motion) .garg__text > p:not([class]), html:not(.motion) .garg__tess { 
   .signals__row { grid-template-columns: 1fr; gap: 0.3em; }
   .plans { border-top: 0; padding-top: 0; }
 
-  .ch--wormhole { min-height: auto; }
-  .lens--door { position: relative; right: auto; top: auto; translate: none; width: 78vw; justify-self: center; margin-bottom: calc(var(--u) * 4); }
 
   .miller__track { height: 260svh; }
   .miller__stage { grid-template-columns: 1fr; grid-template-rows: 56fr 44fr; }
@@ -478,9 +474,9 @@ html:not(.motion) .garg__text > p:not([class]), html:not(.motion) .garg__tess { 
   .fall { grid-column: 1; }
   .fall::after { background: rgb(6 7 8 / 0.45); }
   .fall__caption { display: none; }
-  .garg__text { grid-column: 1; padding-block: 30svh 20svh; }
-  .garg__text > p:not([class]), .garg__tess, .garg__text .ch__lede { background: rgb(6 7 8 / 0.78); padding: 0.9rem 1rem; margin-inline: -1rem; }
-  .garg__text > p:not([class]), .garg__tess { margin-top: 40svh; }
+  .garg__text, .wh__text { grid-column: 1; padding-block: 30svh 20svh; }
+  .garg__text > p:not([class]), .garg__tess, .garg__text .ch__lede, .wh__text > p:not([class]), .wh__text .ch__lede { background: rgb(6 7 8 / 0.78); padding: 0.9rem 1rem; margin-inline: -1rem; }
+  .garg__text > p:not([class]), .garg__tess, .wh__text > p:not([class]) { margin-top: 40svh; }
 
   .final { grid-template-columns: 1fr; }
 
@@ -546,7 +542,7 @@ html:not(.motion) .garg__text > p:not([class]), html:not(.motion) .garg__tess { 
 
 /* Wormhole: Saturn as a print under the title; the Endurance approaching the sphere. */
 .wh__saturn { margin-block: calc(var(--u) * 1) calc(var(--u) * 4); }
-.wh__ring { position: absolute; width: clamp(4rem, 6vw, 6.5rem); left: 46%; top: 24%; color: var(--star); pointer-events: none; }
+.wh__ring { position: absolute; width: clamp(4rem, 6vw, 6.5rem); left: 76%; top: 14%; color: var(--star); pointer-events: none; z-index: 1; }
 
 /* Miller: TARS in the shallows, next to the aftermath. */
 .miller__photo { grid-column: 1 / span 5; position: sticky; top: 14svh; align-self: start; }
@@ -581,7 +577,7 @@ html:not(.motion) .garg__text > p:not([class]), html:not(.motion) .garg__tess { 
   .hero { grid-template-rows: auto minmax(30svh, 1fr) auto auto; }
   .hero__meta { max-width: 75%; }
   .nasa__limb .photo__frame, .mann__ice .photo__frame, .station__colony .photo__frame { aspect-ratio: 4 / 3; }
-  .wh__ring { display: none; }
+  .wh__ring { width: 3.5rem; left: 78%; top: 8%; }
   .miller__photo { position: static; grid-column: 1; }
   .miller__copy { grid-column: 1; }
   .mann__cols { grid-template-columns: 1fr; }

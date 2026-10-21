@@ -30,6 +30,12 @@ const JOBS = {
   'plunge-flyby': ['pd/plunge-flyby.jpg', 'fire', [1920, 960], { crop: { left: 0, top: 0, width: 3840, height: 1700 } }],
   'plunge-horizon': ['pd/plunge-horizon.jpg', 'fire', [1920, 960]],
   'plunge-ring': ['pd/plunge-ring.jpg', 'fire', [1920, 960], { crop: { left: 1024, top: 0, width: 6144, height: 3456 } }],
+  'wormhole-sphere': ['gen/wormhole-sphere.png', 'none', [1920, 960]],
+  'wormhole-tunnel': ['gen/wormhole-tunnel.png', 'none', [1920, 960]],
+  'hubble-lens': ['pd/hubble-lens.jpg', 'void', [900, 600], { crop: { left: 140, top: 200, width: 1000, height: 800 } }],
+  'wormhole-lensed': ['film/wormhole-lensed.jpg', 'void', [1920, 960], { normalise: true, gamma: 1.6 }],
+  'wormhole-throat': ['film/wormhole-ring.jpg', 'void', [1750, 960]],
+  'wormhole-farside': ['film/wormhole-farside.jpg', 'fire', [1920, 960], { crop: { left: 0, top: 112, width: 2048, height: 800 } }],
   ranger: ['film/ranger-docking.png', 'void', [597]],
   tesseract: ['film/tesseract-set.jpg', 'fire', [1280, 800], { crop: { left: 0, top: 0, width: 1280, height: 620 }, contrast: 1.1 }],
   'tars-miller': ['film/tars-miller.png', 'void', [588]],
@@ -54,10 +60,19 @@ function grain(i) {
   return (x - Math.floor(x) - 0.5) * 10;
 }
 
+// Run scripts/wormhole.mjs first: it renders the gen/ sources from the Hubble images.
 fs.mkdirSync(OUT, { recursive: true });
 const sizes = {};
 for (const [name, [src, grade, widths, opt = {}]] of Object.entries(JOBS)) {
   let img = sharp(path.join(ROOT, 'src/assets/raw', src));
+  if (grade === 'none') {
+    // Already toned (rendered in the palette): only resize and encode.
+    const meta = await img.metadata();
+    for (const w of widths) await img.clone().resize({ width: Math.min(w, meta.width) }).webp({ quality: 74 }).toFile(path.join(OUT, `${name}-${Math.min(w, meta.width)}.webp`));
+    sizes[name] = { w: meta.width, h: meta.height, widths: widths.map((w) => Math.min(w, meta.width)) };
+    console.log(`${name}: ${meta.width}x${meta.height} (pre-toned)`);
+    continue;
+  }
   if (opt.crop) img = img.extract(opt.crop);
   if (opt.normalise) img = img.normalise();
   const { data, info } = await img

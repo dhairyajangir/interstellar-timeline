@@ -175,3 +175,17 @@ GARGANTUA (sticky narrative)       MURPH (poster)                  STATION (foot
   nest zooms by one step and loops, so the corridor never ends (idle motion, on screen only).
 - A caption names the frame and credits it. Phones hide the caption (credits stay in the footer)
   and put paragraphs on dark plates. Reduced motion shows the frames one after another.
+
+## The wormhole passage (chapter 03)
+
+- Same grammar as the fall: a full-bleed sticky stage under the text, here with the text on the
+  left. Five frames: the sphere, falling in, the throat, the Milky Way bent around it, the far
+  galaxy.
+- The sphere is rendered for this site by `scripts/wormhole.mjs` from real Hubble light: the
+  eXtreme Deep Field bent around a ball with a point-lens deflection (arcs and an Einstein ring),
+  and a Hubble spiral galaxy seen through it, warm-toned, squeezed toward the rim. The throat is
+  the same deep field pulled into streaks. The code-drawn Endurance flies into the sphere.
+- The middle frames are DNEG's published wormhole renders (falling in, the bent Milky Way, the far
+  side), credited as film imagery. A real gravitational lens (Hubble's SDSS J1038+4849) sits in
+  the text as the honest reference for what the sphere does to light.
+- `npm run grade` renders the sphere and tunnel, then grades everything.
