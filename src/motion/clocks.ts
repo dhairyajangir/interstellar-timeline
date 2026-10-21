@@ -132,17 +132,22 @@ function render() {
 }
 
 // Header and rail parts ([data-ink]) take their ink from whatever world is actually under them.
-// The first stacked element that declares its own data-tone wins; 'split' means the void half.
-function tone() {
-  for (const el of document.querySelectorAll<HTMLElement>('[data-ink]')) {
+// Plain geometry, not hit-testing (elementsFromPoint forced a layout every few frames and cost
+// most of the scroll budget): the last [data-tone] box in document order containing the part's
+// centre wins, so nested halves and photos beat their section; 'split' means the void half.
+let inks: { el: HTMLElement; x: number; y: number }[] = [];
+let toned: HTMLElement[] = [];
+function measureInks() {
+  inks = [...document.querySelectorAll<HTMLElement>('[data-ink]')].flatMap((el) => {
     const r = el.getBoundingClientRect();
-    if (!r.width) continue;
+    return r.width ? [{ el, x: r.left + r.width / 2, y: r.top + r.height / 2 }] : [];
+  });
+}
+function tone() {
+  const boxes = toned.map((el) => [el.dataset.tone, el.getBoundingClientRect()] as const);
+  for (const { el, x, y } of inks) {
     let t = 'void';
-    for (const hit of document.elementsFromPoint(r.left + r.width / 2, r.top + r.height / 2)) {
-      if (hit.closest('.frame, .rails')) continue;
-      const own = (hit as HTMLElement).dataset?.tone;
-      if (own) { t = own === 'dust' ? 'dust' : 'void'; break; }
-    }
+    for (const [tn, r] of boxes) if (x >= r.left && x < r.right && y >= r.top && y < r.bottom) t = tn === 'dust' ? 'dust' : 'void';
     if (el.dataset.on !== t) el.dataset.on = t;
   }
   const frame = document.querySelector<HTMLElement>('.frame');
@@ -199,18 +204,20 @@ export function startClocks() {
   });
   // Rails persist across pages (transition:persist), so collect readouts on every page.
   onScroll(read);
-  addEventListener('resize', read);
+  addEventListener('resize', () => { measureInks(); read(); });
   gsap.ticker.add(tick);
   onPage(() => {
     sections = [...document.querySelectorAll<HTMLElement>('[data-chapter]')];
     door = document.querySelector('[data-lens="door"]');
     hole = document.querySelector('[data-lens="hole"]');
     lost = !!document.querySelector('[data-clocks="lost"]');
+    toned = [...document.querySelectorAll<HTMLElement>('[data-tone]')];
+    measureInks();
     out = {};
     document.querySelectorAll<HTMLElement>('[data-clock]').forEach((el) => (out[el.dataset.clock!] ??= []).push(el));
     ticks.ship = [...document.querySelectorAll<HTMLElement>('[data-ticks="ship"]')];
     ticks.earth = [...document.querySelectorAll<HTMLElement>('[data-ticks="earth"]')];
     read();
-    return () => { override = null; sections = []; door = hole = null; };
+    return () => { override = null; sections = []; toned = []; door = hole = null; };
   });
 }
