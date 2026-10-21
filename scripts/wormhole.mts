@@ -59,7 +59,7 @@ async function sky(exr: string, out: string, exposure: number) {
   return { w: info.width, h: info.height, rgb };
 }
 const near = await sky('starmap_2020_4k_gal.exr', 'near.jpg', 1.6);
-const far = await sky('starmap_random_2020_4k.exr', 'far.jpg', 3.2);
+const far = await sky('starmap_random_2020_4k.exr', 'far.jpg', 2.2);
 
 // A picture for the sky: its own black lifted out and its edge feathered to nothing in an ellipse,
 // so it lies on the stars instead of sitting on them as a rectangle.

@@ -88,7 +88,7 @@ void main() {
   vec2 q = vUv - 0.5;
   sky *= 1.0 - 0.55 * dot(q, q) * 1.6;
   float g = fract(sin(dot(gl_FragCoord.xy + uTime * 61.0, vec2(12.9898, 78.233))) * 43758.5453);
-  sky += (g - 0.5) * 0.035;
+  sky += (g - 0.5) * 0.02;
   color = vec4(sky, 1.0);
 }`;
 

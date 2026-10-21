@@ -107,7 +107,7 @@ export function flight(p: number) {
 // stars behind it, Saturn's night side; everything else in a picture is light added to the sky.
 export type Patch = { lon: number; lat: number; width: number; aspect: number; side: 1 | -1; gain: number; disk?: [number, number, number] };
 export const PATCHES = {
-  saturn: { lon: 0.36, lat: -0.06, width: 0.7, aspect: 1920 / 746, side: -1, gain: 1.15, disk: [0.5, 0.53, 0.079] },
+  saturn: { lon: 0.36, lat: -0.06, width: 0.7, aspect: 1920 / 746, side: -1, gain: 2, disk: [0.5, 0.53, 0.079] },
   galaxy: { lon: 0.18, lat: 0.14, width: 1.1, aspect: 1920 / 1673, side: 1, gain: 1.3 },
   deep: { lon: -0.3, lat: -0.1, width: 1.8, aspect: 1920 / 1753, side: 1, gain: 0.7 },
 } satisfies Record<string, Patch>;
