@@ -178,14 +178,31 @@ GARGANTUA (sticky narrative)       MURPH (poster)                  STATION (foot
 
 ## The wormhole passage (chapter 03)
 
-- Same grammar as the fall: a full-bleed sticky stage under the text, here with the text on the
-  left. Five frames: the sphere, falling in, the throat, the Milky Way bent around it, the far
-  galaxy.
-- The sphere is rendered for this site by `scripts/wormhole.mjs` from real Hubble light: the
-  eXtreme Deep Field bent around a ball with a point-lens deflection (arcs and an Einstein ring),
-  and a Hubble spiral galaxy seen through it, warm-toned, squeezed toward the rim. The throat is
-  the same deep field pulled into streaks. The code-drawn Endurance flies into the sphere.
-- The middle frames are DNEG's published wormhole renders (falling in, the bent Milky Way, the far
-  side), credited as film imagery. A real gravitational lens (Hubble's SDSS J1038+4849) sits in
-  the text as the honest reference for what the sphere does to light.
-- `npm run grade` renders the sphere and tunnel, then grades everything.
+- A live flight, not a slideshow. `src/lib/wormhole.ts` holds the metric DNEG and Kip Thorne used
+  for the film (James, von Tunzelmann, Franklin, Thorne, "Visualizing Interstellar's Wormhole",
+  2015) with the film's parameters: throat radius 1, length 2a = 0.01, lensing width W = 0.05.
+  Each light ray is a null geodesic traced backward with RK4 to one of the two skies.
+- `scripts/wormhole.mts` traces 768 ray angles for 192 camera positions into `public/wormhole/lut.png`
+  (16 bits per value, sign = which sky). `src/motion/passage.ts` (WebGL2) looks every pixel up in
+  that map, so the Einstein ring, the Milky Way bending round the rim and the far sky inside the
+  sphere all come from the physics. Scroll moves the camera along the axis (`flight()`): Saturn
+  and the sphere, the rim, through the throat, the far galaxy, then a turn to see home in a ball.
+- Skies: NASA SVS Deep Star Maps 2020 (the Milky Way on our side, the "elsewhere" star field on
+  the far side), with Cassini's backlit Saturn and two Hubble images pinned to them. Saturn's
+  night side hides the stars behind it.
+- At rest the camera drifts a hair, so stars slide round the ring the way the paper describes.
+- Without WebGL2 or under reduced motion, five stills ray traced on the CPU through the same map
+  take over (the old crossfade grammar). DNEG's own render and a real Hubble lens sit in the text.
+- `npm run grade` traces the map, renders the skies and stills, then grades everything.
+
+## Palette, characters, score (third pass)
+
+- The beige is gone. The palette is sampled from the film's frames: space black #0b0e12, cold
+  silver #e3e6e4, the grey daylight of the farm #b2b6b0 (ash, Murph's side), graphite #12161a.
+  Gargantua keeps the film's warm gold, in its grade only.
+- Cooper and Murph appear in the story: the corn, the NASA table, the drive away, Murph at the
+  blackboard. Their faces sit on the two clocks; Murph's grows up when she reaches thirty, Cooper's
+  never changes.
+- Sound is off until asked for (the button in the header). An organ pad synthesized with Web
+  Audio, one chord per chapter; on Miller's planet a tick every 1.25 s, a day on Earth per tick.
+  Nothing from the film's score is used.

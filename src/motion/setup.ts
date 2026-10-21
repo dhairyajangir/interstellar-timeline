@@ -3,6 +3,8 @@ import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { ease, isMobile, isTouch, onPage, onScroll, prefersReducedMotion, setLoaderExit, setLoaderFormat, setTransition } from '../engine';
 import { onClocks, startClocks } from './clocks';
+import { wormholeFlight } from './passage';
+import { setupSound } from './sound';
 
 export function setupMotion() {
   // Loader: a launch countdown. Its last frame is the hero's first: void left, dust right.
@@ -36,6 +38,7 @@ export function setupMotion() {
   imageMotion();
   buttonFill();
   millerStage();
+  setupSound();
 }
 
 // Hero words are visible from the first paint (they are the LCP) and settle from stretched to
@@ -70,7 +73,7 @@ function imageMotion() {
       whileVisible(el, gsap.to(el, { rotate: 360, duration: parseFloat(el.dataset.spin || '90'), ease: 'none', repeat: -1 }));
     });
 
-    wormholePassage();
+    const stopFlight = wormholePassage();
 
     // Docking: the Ranger turns to match the tumbling ship while you read about it.
     document.querySelectorAll<HTMLElement>('[data-spin-scrub]').forEach((el) => {
@@ -92,6 +95,7 @@ function imageMotion() {
       }
       whileVisible(hand, tl);
     }
+    return stopFlight;
   });
 }
 
@@ -107,45 +111,28 @@ function captionFor(stage: HTMLElement, layers: HTMLElement[], handovers: number
   };
 }
 
-// Through the wormhole. The sphere is real Hubble light bent around a ball; the Endurance flies
-// into it, the sphere swells until you are inside, the deep field streaks past, the Milky Way
-// bends around the throat, and the far galaxy opens. Same push-through grammar as the fall.
+// Through the wormhole: a live flight, ray traced through the film's metric (src/motion/passage.ts).
+// Where WebGL2 is missing, the same physics as five still frames, each handing over to the next.
+// Handovers match flight() in src/lib/wormhole.ts: approach, rim, throat, far side, looking back.
 function wormholePassage() {
   const stage = document.querySelector<HTMLElement>('[data-passage]');
   if (!stage) return;
-  const L = (k: string) => stage.querySelector<HTMLElement>(`[data-fall-layer="${k}"]`)!;
-  const [sphere, lensed, tunnel, throat, far] = ['sphere', 'lensed', 'tunnel', 'throat', 'far'].map(L);
-  const ring = stage.querySelector<HTMLElement>('[data-approach]');
-  const caption = captionFor(stage, [sphere, lensed, tunnel, throat, far], [0.36, 0.5, 0.64, 0.78]);
+  const keys = ['saturn', 'near', 'rim', 'far', 'home'];
+  const layers = keys.map((k) => stage.querySelector<HTMLElement>(`[data-fall-layer="${k}"]`)!);
+  const caption = captionFor(stage, layers, [0.3, 0.5, 0.62, 0.8]);
+  const live = wormholeFlight(stage, caption);
+  if (live) return live;
+
   const tl = gsap.timeline({
     defaults: { ease: 'none' },
     scrollTrigger: { trigger: stage.closest('section'), start: 'top top', end: 'bottom bottom', scrub: 0.6, invalidateOnRefresh: true, onUpdate: (s) => caption(s.progress) },
   });
-  // 0 → 0.36: the sphere hangs there; the ring falls into its centre and is gone.
-  tl.fromTo(sphere, { scale: 1 }, { scale: 1.3, duration: 0.3 }, 0);
-  if (ring) {
-    const to = () => {
-      const a = ring.getBoundingClientRect(), b = stage.getBoundingClientRect();
-      return { x: b.left + b.width / 2 - (a.left + a.width / 2), y: b.top + b.height / 2 - (a.top + a.height / 2) };
-    };
-    tl.fromTo(ring, { x: 0, y: 0, scale: 1, rotate: 0 }, { x: () => to().x, y: () => to().y, scale: 0.12, rotate: 160, ease: 'power2.in', duration: 0.26 }, 0.02)
-      .to(ring, { autoAlpha: 0, duration: 0.03 }, 0.26);
-  }
-  // 0.3 → 0.5: into the sphere; the lensed sky swims up from behind it.
-  tl.to(sphere, { scale: 4, autoAlpha: 0, duration: 0.08, ease: 'power2.in' }, 0.3)
-    .fromTo(lensed, { autoAlpha: 0, scale: 1.5, rotate: 8 }, { autoAlpha: 1, scale: 1, rotate: 0, duration: 0.08 }, 0.33)
-    .to(lensed, { scale: 1.3, duration: 0.1 }, 0.41)
-    .to(lensed, { autoAlpha: 0, duration: 0.03 }, 0.5)
-    // 0.5 → 0.64: the throat, everything streaming past.
-    .fromTo(tunnel, { autoAlpha: 0, scale: 1.6 }, { autoAlpha: 1, scale: 1, duration: 0.05 }, 0.5)
-    .to(tunnel, { scale: 1.45, duration: 0.09 }, 0.55)
-    .to(tunnel, { autoAlpha: 0, duration: 0.03 }, 0.64)
-    // 0.64 → 0.78: the Milky Way bent around the throat.
-    .fromTo(throat, { autoAlpha: 0, scale: 1.3, yPercent: -8 }, { autoAlpha: 1, scale: 1, yPercent: 0, duration: 0.06 }, 0.64)
-    .to(throat, { scale: 1.6, autoAlpha: 0, duration: 0.06 }, 0.75)
-    // 0.78 → 1: out the other side, into a new sky.
-    .fromTo(far, { autoAlpha: 0, scale: 1.25, clipPath: 'inset(40% 40% 40% 40%)' }, { autoAlpha: 1, scale: 1, clipPath: 'inset(0% 0% 0% 0%)', duration: 0.09 }, 0.78)
-    .to(far, { scale: 1.08, duration: 0.13 }, 0.87);
+  const [saturn, near, rim, far, home] = layers;
+  tl.fromTo(saturn, { scale: 1 }, { scale: 1.15, duration: 0.3 }, 0)
+    .fromTo(near, { autoAlpha: 0, scale: 0.9 }, { autoAlpha: 1, scale: 1.05, duration: 0.2 }, 0.28)
+    .fromTo(rim, { autoAlpha: 0, scale: 0.95 }, { autoAlpha: 1, scale: 1.1, duration: 0.12 }, 0.48)
+    .fromTo(far, { autoAlpha: 0, scale: 1.15 }, { autoAlpha: 1, scale: 1, duration: 0.18 }, 0.6)
+    .fromTo(home, { autoAlpha: 0, scale: 1.1 }, { autoAlpha: 1, scale: 1, duration: 0.2 }, 0.8);
 }
 
 // Falling into Gargantua. One scrubbed timeline over the chapter: each real frame takes over from

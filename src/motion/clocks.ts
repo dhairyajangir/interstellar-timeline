@@ -129,6 +129,8 @@ function render() {
   set('murph', `Murph ${approx}${Math.floor(10 + state.earth)}`);
   set('earth-label', state.anyYear ? 'Murph’s room, any year' : 'Earth clock');
   document.documentElement.classList.toggle('any-year', state.anyYear);
+  // The rail portrait: Murph grows up while Cooper doesn't. The film recasts her as a scientist in her thirties.
+  document.documentElement.classList.toggle('murph-grown', 10 + state.earth >= 30);
 }
 
 // Header and rail parts ([data-ink]) take their ink from whatever world is actually under them.

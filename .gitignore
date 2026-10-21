@@ -34,5 +34,5 @@ pnpm-debug.log*
 
 .vercel
 
-# Rendered by scripts/wormhole.mjs (npm run grade)
+# Rendered by scripts/wormhole.mts (npm run grade): converted star maps, ray map cache, frames
 src/assets/raw/gen/

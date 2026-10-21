@@ -17,7 +17,7 @@ export const site = {
 };
 
 /** Keep in sync with tokens.css (the sky shader reads these). */
-export const palette = { void: '#060708', star: '#ece7dc', dust: '#c9b48f', soot: '#17130e' };
+export const palette = { void: '#0b0e12', star: '#e3e6e4', dust: '#b2b6b0', soot: '#12161a' };
 
 export const nav = [
   { label: 'Timeline', href: '/' },
@@ -99,6 +99,7 @@ export const chapters: Chapter[] = [
     body: [
       'The crew is Cooper, Amelia Brand, Romilly and Doyle, with two robots, TARS and CASE.',
       'The wormhole is not a hole. It is a sphere, a ball of light that shows a different sky. The Endurance falls into it and comes out in another galaxy.',
+      'The flight beside this text is not an effect laid over a picture. Each point of it is a ray of light followed back through the equation Kip Thorne gave the film’s effects team: a throat one radius wide, very short, with a gentle pull. That is why the Milky Way wraps round the rim, and why the way home, seen from the far side, is a small bright ball.',
     ],
     from: { earth: 0, ship: 0 },
     to: { earth: 2, ship: 2 },

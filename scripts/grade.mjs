@@ -12,30 +12,38 @@ const OUT = path.join(ROOT, 'public/img');
 
 // Grades: luminance → a gradient between palette stops (tokens.css). Grain hides soft sources.
 const GRADES = {
-  void: ['#060708', '#3b3a37', '#ece7dc'],          // silver on space black
-  dust: ['#17130e', '#6e5d44', '#e8d9bb'],          // soot to pale dust, reads on the dust ground
-  fire: ['#060708', '#7a5a33', '#c9b48f', '#fbf3e2'], // Gargantua's light: black, ember, dust, white
+  void: ['#0b0e12', '#38414a', '#e3e6e4'],          // slate silver on space black, the film's cold light
+  dust: ['#12161a', '#5a5e57', '#d6d9d3'],          // graphite to ash, the grey daylight of the farm
+  fire: ['#0b0e12', '#6a4a2a', '#c4945c', '#f4ead9'], // Gargantua's light: black, ember, gold, white
 };
 
 // name: [source, grade, widths, options]
 const JOBS = {
   'saturn-backlit': ['pd/saturn-backlit.jpg', 'void', [1600, 900]],
-  'saturn-night': ['pd/saturn-night.jpg', 'void', [1600, 900]],
   blackhole: ['pd/blackhole.jpg', 'fire', [1024, 640], { crop: { left: 0, top: 232, width: 1024, height: 560 } }],
   colony: ['pd/colony.jpg', 'dust', [1600, 900], { gamma: 1 }],
   'earth-limb': ['pd/earth-limb.jpg', 'void', [1600, 900]],
   antarctic: ['pd/antarctic.jpg', 'void', [1600, 900], { contrast: 1.15 }],
-  'dust-storm': ['pd/dust-cimarron.jpg', 'dust', [1200, 700], { contrast: 1.1, crop: { left: 230, top: 190, width: 1460, height: 1500 } }],
+  // Cooper and Murph: studio stills (IMDb), © Warner Bros. and Paramount.
+  cornfield: ['film/people/farm-cornfield.jpg', 'dust', [1400, 800]],
+  'nasa-table': ['film/people/nasa-table.jpg', 'dust', [1200, 700]],
+  'cooper-leaving': ['film/people/cooper-leaving.jpg', 'dust', [1400, 800]],
+  'murph-blackboard': ['film/people/murph-blackboard.jpg', 'dust', [1200, 700]],
+  'face-cooper': ['film/people/cooper-helmet.jpg', 'void', [160], { crop: { left: 480, top: 140, width: 520, height: 520 } }],
+  'face-murph-young': ['film/people/nasa-table.jpg', 'dust', [160], { crop: { left: 620, top: 240, width: 380, height: 380 } }],
+  'face-murph': ['film/people/murph-adult.jpg', 'dust', [160], { crop: { left: 620, top: 160, width: 520, height: 520 } }],
   'dust-town': ['pd/dust-dallas.jpg', 'dust', [1600, 900], { crop: { left: 12, top: 30, width: 1880, height: 1390 } }],
   'plunge-flyby': ['pd/plunge-flyby.jpg', 'fire', [1920, 960], { crop: { left: 0, top: 0, width: 3840, height: 1700 } }],
   'plunge-horizon': ['pd/plunge-horizon.jpg', 'fire', [1920, 960]],
   'plunge-ring': ['pd/plunge-ring.jpg', 'fire', [1920, 960], { crop: { left: 1024, top: 0, width: 6144, height: 3456 } }],
-  'wormhole-sphere': ['gen/wormhole-sphere.png', 'none', [1920, 960]],
-  'wormhole-tunnel': ['gen/wormhole-tunnel.png', 'none', [1920, 960]],
+  // Ray traced through the film's wormhole metric by scripts/wormhole.mts (fallback frames).
+  'wh-saturn': ['gen/wh-saturn.png', 'none', [1600, 900]],
+  'wh-near': ['gen/wh-near.png', 'none', [1600, 900]],
+  'wh-rim': ['gen/wh-rim.png', 'none', [1600, 900]],
+  'wh-far': ['gen/wh-far.png', 'none', [1600, 900]],
+  'wh-home': ['gen/wh-home.png', 'none', [1600, 900]],
   'hubble-lens': ['pd/hubble-lens.jpg', 'void', [900, 600], { crop: { left: 140, top: 200, width: 1000, height: 800 } }],
-  'wormhole-lensed': ['film/wormhole-lensed.jpg', 'void', [1920, 960], { normalise: true, gamma: 1.6 }],
-  'wormhole-throat': ['film/wormhole-ring.jpg', 'void', [1750, 960]],
-  'wormhole-farside': ['film/wormhole-farside.jpg', 'fire', [1920, 960], { crop: { left: 0, top: 112, width: 2048, height: 800 } }],
+  'wormhole-throat': ['film/wormhole-ring.jpg', 'void', [1200, 700]],
   ranger: ['film/ranger-docking.png', 'void', [597]],
   tesseract: ['film/tesseract-set.jpg', 'fire', [1280, 800], { crop: { left: 0, top: 0, width: 1280, height: 620 }, contrast: 1.1 }],
   'tars-miller': ['film/tars-miller.png', 'void', [588]],
@@ -60,7 +68,7 @@ function grain(i) {
   return (x - Math.floor(x) - 0.5) * 10;
 }
 
-// Run scripts/wormhole.mjs first: it renders the gen/ sources from the Hubble images.
+// Run scripts/wormhole.mts first: it ray traces the gen/ wormhole frames (npm run grade does both).
 fs.mkdirSync(OUT, { recursive: true });
 const sizes = {};
 for (const [name, [src, grade, widths, opt = {}]] of Object.entries(JOBS)) {

@@ -16,13 +16,14 @@ const img = (p: PhotoData, sizes: string) => {
     sizes, width: s.w, height: s.h, loading: 'lazy' as const, decoding: 'async' as const,
   };
 };
-// Through the wormhole, in order. Keys drive src/motion/setup.ts (wormholePassage).
+// Through the wormhole, in order. Keys drive src/motion/setup.ts (wormholePassage); the frames are
+// the live flight's own physics, so they stand in for it without WebGL2 or with reduced motion.
 const passage = [
-  { key: 'sphere', label: 'A sphere, not a hole', photo: photos.wormholeSphere },
-  { key: 'lensed', label: 'Falling in', photo: photos.wormholeLensed },
-  { key: 'tunnel', label: 'The throat', photo: photos.wormholeTunnel },
-  { key: 'throat', label: 'The Milky Way bent around it', photo: photos.wormholeThroat },
-  { key: 'far', label: 'Another galaxy', photo: photos.wormholeFar },
+  { key: 'saturn', label: 'Saturn, and a sphere beside it', photo: photos.whSaturn },
+  { key: 'near', label: 'The Milky Way bends round the rim', photo: photos.whNear },
+  { key: 'rim', label: 'Into the throat', photo: photos.whRim },
+  { key: 'far', label: 'Another galaxy', photo: photos.whFar },
+  { key: 'home', label: 'Looking back: home, inside a ball', photo: photos.whHome },
 ];
 // Falling into Gargantua, in order. Keys drive src/motion/setup.ts (fallSequence).
 const fall = [
@@ -70,7 +71,7 @@ const signals = [
 
   <!-- 01 EARTH: asymmetric pair on dust. -->
   <section id="earth" class="ch ch--earth" data-chapter="0" data-tone="dust" aria-labelledby="t-earth">
-    <Photo photo={photos.dustStorm} class="ch__art ch__art--farm" sizes="(min-width: 768px) 45vw, 100vw" />
+    <Photo photo={photos.cornfield} class="ch__art ch__art--farm" sizes="(min-width: 768px) 45vw, 100vw" />
     <div class="ch__text">
       <p class="ch__meta"><span class="ch__n">{nn(earth.n)}</span>{earth.place}</p>
       <h2 id="t-earth" class="ch__title" style={width(earth.wdth)} data-split="lines">{earth.title}</h2>
@@ -91,6 +92,7 @@ const signals = [
       <div class="nasa__story">
         <p>{nasa.body[0]}</p>
         <p>{nasa.body[1]}</p>
+        <Photo photo={photos.nasaTable} class="nasa__table" sizes="(min-width: 768px) 38vw, 100vw" />
       </div>
       <div class="nasa__signals">
         <h3 class="nasa__label">Three signals still say come</h3>
@@ -106,6 +108,7 @@ const signals = [
       <p class="plans__b"><strong>Plan B.</strong> Frozen embryos, a new world, a fresh start without the people at home.</p>
     </div>
     <div class="nasa__leave">
+      <Photo photo={photos.cooperLeaving} class="nasa__drive" sizes="(min-width: 768px) 55vw, 100vw" />
       <p class="ch__lede">{nasa.body[3]}</p>
       <ClockStrip {...nasa.clockNote} />
     </div>
@@ -114,24 +117,25 @@ const signals = [
 
   <!-- 03 WORMHOLE: full-bleed sky. -->
   <section id="wormhole" class="ch ch--wormhole" data-chapter="2" data-tone="void" aria-labelledby="t-wormhole">
-    <!-- The passage: a sphere made from real Hubble light, then through it and out. -->
+    <!-- The passage: a flight through the film's wormhole metric, ray traced live (src/motion/passage.ts). -->
     <div class="fall fall--left" data-passage>
       {passage.map((f) => (
         <figure class={`fall__layer fall__layer--${f.key}`} data-fall-layer={f.key} data-caption={f.label} data-credit={f.photo.credit}>
           <img {...img(f.photo, '100vw')} alt={f.photo.alt} />
-          {f.key === 'sphere' && <div class="wh__ring" data-approach aria-hidden="true"><Art kind="endurance" /></div>}
         </figure>
       ))}
+      <canvas class="wh__gl" data-wh-gl aria-hidden="true"></canvas>
       <p class="fall__caption fall__caption--right" aria-hidden="true"><span data-fall-label>{passage[0].label}</span><span data-fall-credit>{passage[0].photo.credit}</span></p>
     </div>
     <div class="ch__text wh__text">
       <p class="ch__meta"><span class="ch__n">{nn(wormhole.n)}</span>{wormhole.place}</p>
       <h2 id="t-wormhole" class="ch__title" style={width(wormhole.wdth)} data-split="lines">{wormhole.title}</h2>
-      <Photo photo={photos.saturnNight} class="wh__saturn" sizes="(min-width: 768px) 40vw, 100vw" />
+      <Photo photo={photos.wormholeThroat} class="wh__saturn" sizes="(min-width: 768px) 40vw, 100vw" />
       <p class="ch__lede">{wormhole.lede}</p>
       <p>{wormhole.body[0]}</p>
       <Photo photo={photos.hubbleLens} class="wh__lens" sizes="(min-width: 768px) 30vw, 100vw" parallax={false} />
       <p>{wormhole.body[1]}</p>
+      <p>{wormhole.body[2]}</p>
       <ClockStrip {...wormhole.clockNote} />
     </div>
   </section>
@@ -231,6 +235,7 @@ const signals = [
     <div class="murph__cols">
       <div class="murph__lead">
         <p class="ch__lede">{murph.lede}</p>
+        <Photo photo={photos.murphBoard} class="murph__board" sizes="(min-width: 768px) 40vw, 100vw" />
         <div class="watch">
           <Photo photo={photos.watch} frame="round" caption={false} parallax={false} sizes="12rem" />
           <svg class="watch__hand" viewBox="0 0 100 100" aria-hidden="true"><line x1="50" y1="56" x2="50" y2="8" stroke="currentColor" stroke-width="1.6" data-morse-hand /><circle cx="50" cy="50" r="2.4" fill="currentColor" /></svg>

@@ -79,7 +79,7 @@ void main() {
 
   col += field(sp) * (1.0 - inside) * (1.0 - shadow);
   col *= 1.0 - shadow;
-  col += vec3(0.024, 0.027, 0.031) * (1.0 - shadow); // the void ground, #060708
+  col += vec3(0.043, 0.055, 0.071) * (1.0 - shadow); // the void ground, #0b0e12
   col += (hash(px + fract(uTime)) - 0.5) * 0.012;
   gl_FragColor = vec4(col, 1.0);
 }`;

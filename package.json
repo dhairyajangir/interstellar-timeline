@@ -10,7 +10,7 @@
     "build": "astro build",
     "preview": "astro preview",
     "astro": "astro",
-    "grade": "node scripts/wormhole.mjs && node scripts/grade.mjs"
+    "grade": "node --experimental-strip-types --no-warnings scripts/wormhole.mts && node scripts/grade.mjs"
   },
   "dependencies": {
     "@astrojs/sitemap": "^3.7.4",

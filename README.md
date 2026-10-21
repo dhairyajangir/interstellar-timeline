@@ -4,7 +4,7 @@ An unofficial, scroll-driven timeline of *Interstellar* (2014). Two clocks run i
 whole page: Cooper's ship time on the left, Earth time (and Murph's age) on the right. Gravity decides
 how fast each one runs.
 
-Photographs are public-domain NASA, Library of Congress and USDA images, toned by `scripts/grade.mjs`. A few film stills supplied by the owner (© Warner Bros. / Paramount) are marked `film: true` in `src/data/photos.ts`. Line art, the Endurance ring and the sky shader are drawn in code.
+Photographs are public-domain NASA and USDA images, toned by `scripts/grade.mjs`. Film stills (© Warner Bros. / Paramount), including Cooper and Murph, are marked `film: true` in `src/data/photos.ts`. The wormhole is ray traced through the film's own metric (`src/lib/wormhole.ts`, `scripts/wormhole.mts`, `src/motion/passage.ts`); `npm run grade` rebuilds its ray map, skies and stills (needs ffmpeg for the NASA EXR star maps). The score is an organ pad synthesized with Web Audio (`src/motion/sound.ts`), off until the visitor turns it on. Line art, the Endurance ring and the sky shader are drawn in code.
 
 ## Run
 
@@ -24,6 +24,7 @@ npm run preview    # serve the production build
 - `src/motion/sky.ts`: the WebGL sky (stars, wormhole, Gargantua). Falls back to CSS when WebGL is
   slow, missing, or reduced motion is on.
 - `src/motion/setup.ts`: loader, wormhole page transition, CTA fill, Miller's planet stage.
+- `src/motion/passage.ts`: the live wormhole flight (WebGL2). `src/motion/sound.ts`: the score.
 - `DESIGN.md`: concept, palette, type and layout decisions.
 
 ## Deployment

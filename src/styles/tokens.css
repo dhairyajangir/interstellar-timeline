@@ -28,18 +28,18 @@
 
 :root {
   /* The two worlds */
-  --void: #060708;
-  --star: #ece7dc;
-  --dust: #c9b48f;
-  --soot: #17130e;
-  --muted: #958f84;      /* secondary on void, 6.1:1 */
-  --muted-dust: #4a3f30; /* secondary on dust, 6.9:1 */
+  --void: #0b0e12;
+  --star: #e3e6e4;
+  --dust: #b2b6b0;  /* ash: the film's grey Earth light, sampled from its frames */
+  --soot: #12161a;
+  --muted: #8b939a;      /* secondary on void, 6.2:1 */
+  --muted-dust: #3b4247; /* secondary on ash, 5.0:1 */
 
   /* Engine roles */
   --c-bg: var(--void);
   --c-fg: var(--star);
   --c-muted: var(--muted);
-  --c-line: rgb(236 231 220 / 0.16);
+  --c-line: rgb(227 230 228 / 0.16);
   --c-accent: var(--dust);
   --c-curtain: var(--void);
 
