@@ -1,0 +1,146 @@
+{
+  "url": "http://127.0.0.1:4400/time/",
+  "errors": [],
+  "failed": [],
+  "desktop": {
+    "loadMs": 1150,
+    "loaderMs": 2722,
+    "settledMs": null,
+    "vitals": {
+      "lcpMs": 672,
+      "lcpElement": "span.tp-rate__n",
+      "cls": 0.003
+    },
+    "height": 5685,
+    "overflowX": false,
+    "offenders": [],
+    "h1": [
+      "How the\nclocks\ndrift"
+    ],
+    "smallTargets": [],
+    "glHidden": [],
+    "title": "How the clocks drift | Two Clocks",
+    "glOn": false,
+    "scrollFps": {
+      "fps": 39,
+      "worstFrameMs": 250
+    },
+    "nav": {
+      "href": "/",
+      "scrollYAfter": 0,
+      "title": "Two Clocks: Interstellar in the order it happens"
+    },
+    "idleMotion": true,
+    "idleAt": "top"
+  },
+  "mobile": {
+    "throttled": true,
+    "loadMs": 7561,
+    "loaderMs": 7960,
+    "settledMs": 10287,
+    "vitals": {
+      "lcpMs": 3880,
+      "lcpElement": "p.tp-hero__lede",
+      "cls": 0
+    },
+    "height": 6280,
+    "overflowX": false,
+    "offenders": [],
+    "h1": [
+      "How the clocks drift"
+    ],
+    "smallTargets": [],
+    "glHidden": [],
+    "title": "How the clocks drift | Two Clocks",
+    "glOn": false,
+    "scrollFps": {
+      "fps": 47,
+      "worstFrameMs": 67
+    }
+  },
+  "files": [
+    "C:\\Users\\think\\projects\\interstellar-timeline\\.jury\\127.0.0.1-4400\\shots\\time\\d-00-firstpaint.png",
+    "C:\\Users\\think\\projects\\interstellar-timeline\\.jury\\127.0.0.1-4400\\shots\\time\\d-01-hero.png",
+    "C:\\Users\\think\\projects\\interstellar-timeline\\.jury\\127.0.0.1-4400\\shots\\time\\d-02-scroll.png",
+    "C:\\Users\\think\\projects\\interstellar-timeline\\.jury\\127.0.0.1-4400\\shots\\time\\d-03-scroll.png",
+    "C:\\Users\\think\\projects\\interstellar-timeline\\.jury\\127.0.0.1-4400\\shots\\time\\d-04-scroll.png",
+    "C:\\Users\\think\\projects\\interstellar-timeline\\.jury\\127.0.0.1-4400\\shots\\time\\d-05-scroll.png",
+    "C:\\Users\\think\\projects\\interstellar-timeline\\.jury\\127.0.0.1-4400\\shots\\time\\d-06-scroll.png",
+    "C:\\Users\\think\\projects\\interstellar-timeline\\.jury\\127.0.0.1-4400\\shots\\time\\d-07-scroll.png",
+    "C:\\Users\\think\\projects\\interstellar-timeline\\.jury\\127.0.0.1-4400\\shots\\time\\d-90-transition-a.png",
+    "C:\\Users\\think\\projects\\interstellar-timeline\\.jury\\127.0.0.1-4400\\shots\\time\\d-90-transition-b.png",
+    "C:\\Users\\think\\projects\\interstellar-timeline\\.jury\\127.0.0.1-4400\\shots\\time\\d-90-transition-c.png",
+    "C:\\Users\\think\\projects\\interstellar-timeline\\.jury\\127.0.0.1-4400\\shots\\time\\d-91-after-nav.png",
+    "C:\\Users\\think\\projects\\interstellar-timeline\\.jury\\127.0.0.1-4400\\shots\\time\\d-92-back.png",
+    "C:\\Users\\think\\projects\\interstellar-timeline\\.jury\\127.0.0.1-4400\\shots\\time\\k-01-focus.png",
+    "C:\\Users\\think\\projects\\interstellar-timeline\\.jury\\127.0.0.1-4400\\shots\\time\\k-02-focus.png",
+    "C:\\Users\\think\\projects\\interstellar-timeline\\.jury\\127.0.0.1-4400\\shots\\time\\k-03-focus.png",
+    "C:\\Users\\think\\projects\\interstellar-timeline\\.jury\\127.0.0.1-4400\\shots\\time\\k-04-focus.png",
+    "C:\\Users\\think\\projects\\interstellar-timeline\\.jury\\127.0.0.1-4400\\shots\\time\\h-01-rest.png",
+    "C:\\Users\\think\\projects\\interstellar-timeline\\.jury\\127.0.0.1-4400\\shots\\time\\h-01-hover.png",
+    "C:\\Users\\think\\projects\\interstellar-timeline\\.jury\\127.0.0.1-4400\\shots\\time\\m-01-hero.png",
+    "C:\\Users\\think\\projects\\interstellar-timeline\\.jury\\127.0.0.1-4400\\shots\\time\\m-02-scroll.png",
+    "C:\\Users\\think\\projects\\interstellar-timeline\\.jury\\127.0.0.1-4400\\shots\\time\\m-03-scroll.png",
+    "C:\\Users\\think\\projects\\interstellar-timeline\\.jury\\127.0.0.1-4400\\shots\\time\\m-04-scroll.png",
+    "C:\\Users\\think\\projects\\interstellar-timeline\\.jury\\127.0.0.1-4400\\shots\\time\\m-05-scroll.png",
+    "C:\\Users\\think\\projects\\interstellar-timeline\\.jury\\127.0.0.1-4400\\shots\\time\\m-06-scroll.png",
+    "C:\\Users\\think\\projects\\interstellar-timeline\\.jury\\127.0.0.1-4400\\shots\\time\\r-01-hero.png",
+    "C:\\Users\\think\\projects\\interstellar-timeline\\.jury\\127.0.0.1-4400\\shots\\time\\r-02-mid.png"
+  ],
+  "notes": [
+    "desktop FPS runs headless on a software GPU: treat it as a floor, not a measurement of real hardware",
+    "mobile runs at 4x CPU slowdown on slow 4G: mobile.vitals and mobile.scrollFps are the numbers that count",
+    "loadMs: ms from navigation to the load event, null if it had not fired after 30 s (desktop) or 60 s (phone); a heavy page takes long, while visitors see content at vitals.lcpMs. loaderMs: ms until the #loader ended, null when the page has none",
+    "settledMs: ms from navigation by which the first screen stopped changing, never before the fixed wait. null: still changing at the cap, either a long intro or continuous motion (a live shader, video); d-01-hero / m-01-hero tell which. reduced.moving: the screen was still changing 1.5 s after load with reduced motion on"
+  ],
+  "keyboard": {
+    "stops": [
+      "a \"Skip to content\"",
+      "a \"Two Clocks\"",
+      "a \"Timeline\"",
+      "a \"How the clocks drift\"",
+      "input \"INPUT\"",
+      "div \"Moment Cooper’s clock Earth clock Murph’\"",
+      "a \"Back to the timeline ←\"",
+      "a \"Timeline\"",
+      "a \"How the clocks drift\"",
+      "a \"Back to the top\"",
+      "(body: focus left the page)"
+    ],
+    "skipLinkFirst": true,
+    "noVisibleFocus": [],
+    "invisibleFocus": [],
+    "stuck": false
+  },
+  "hover": {
+    "targets": [
+      {
+        "shot": "h-01",
+        "label": "a \"Back to the timeline\"",
+        "interactive": true,
+        "primary": true,
+        "react": "moves",
+        "changed": [
+          "color",
+          "borderColor",
+          "textDecorationColor",
+          "clipPath",
+          "translate"
+        ]
+      }
+    ],
+    "noHoverChange": [],
+    "colorOnly": [],
+    "covered": [],
+    "cursorFollower": false
+  },
+  "reduced": {
+    "hiddenText": 0,
+    "moving": false
+  },
+  "a11y": {
+    "violations": [],
+    "serious": 0,
+    "contrastNeedsReview": 45
+  }
+}
